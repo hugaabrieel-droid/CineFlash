@@ -1,1452 +1,1313 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CineFlash - Apple Liquid Glass Cinema Experience</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f4ff',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            accent: '#ff2d55',
-                            glow: '#00f0ff'
-                        }
-                    },
-                    fontFamily: {
-                        sf: ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', 'Roboto', 'sans-serif']
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'liquid-morph': 'morph 8s ease-in-out infinite alternate',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-8px)' },
-                        },
-                        morph: {
-                            '0%': { borderRadius: '40% 60% 70% 30% / 40% 50% 60% 50%' },
-                            '100%': { borderRadius: '60% 40% 30% 70% / 50% 60% 40% 60%' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FilmKu — Database Film & Serial TV</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans for clean typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Variables & Theme Definitions */
+    :root {
+      /* Mode Terang (Pastel Lavender, Quartz, Ice Blue) */
+      --bg-gradient-1: #e0e7ff;
+      --bg-gradient-2: #fae8ff;
+      --bg-gradient-3: #dbeafe;
+      --bg-base: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --accent-color: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.35);
+      
+      /* Liquid Glass Parameters - Light */
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-bg-hover: rgba(255, 255, 255, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.65);
+      --glass-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.07), 0 0 15px 0 rgba(255, 255, 255, 0.5);
+      --specular-top: rgba(255, 255, 255, 0.85);
+      --specular-bottom: rgba(0, 0, 0, 0.04);
+      --card-solid: #ffffff;
+    }
 
-    <!-- Custom CSS for Apple Liquid Glass (iOS 26 Style Refraction & Lens) -->
-    <style>
-        :root {
-            --glass-bg: rgba(255, 255, 255, 0.45);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --glass-specular: rgba(255, 255, 255, 0.85);
-            --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
-            --text-main: #0f172a;
-            --text-sub: #475569;
-            --liquid-glow: rgba(99, 102, 241, 0.3);
-        }
+    [data-theme="dark"] {
+      /* Mode Gelap (Deep Ocean, Indigo Midnight, Dark Violet) */
+      --bg-gradient-1: #0f172a;
+      --bg-gradient-2: #1e1b4b;
+      --bg-gradient-3: #111827;
+      --bg-base: #090d16;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-color: #818cf8;
+      --accent-hover: #6366f1;
+      --accent-glow: rgba(129, 140, 248, 0.4);
+      
+      /* Liquid Glass Parameters - Dark */
+      --glass-bg: rgba(30, 41, 59, 0.45);
+      --glass-bg-hover: rgba(30, 41, 59, 0.65);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 20px 0 rgba(0, 0, 0, 0.3);
+      --specular-top: rgba(255, 255, 255, 0.25);
+      --specular-bottom: rgba(0, 0, 0, 0.4);
+      --card-solid: #1e293b;
+    }
 
-        .dark {
-            --glass-bg: rgba(18, 20, 32, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --glass-specular: rgba(255, 255, 255, 0.35);
-            --glass-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
-            --liquid-glow: rgba(0, 240, 255, 0.25);
-        }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
 
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
-            background-color: #090a0f;
-            color: var(--text-main);
-            overflow-x: hidden;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+    /* Moving Ambient Mesh Gradient Background */
+    .mesh-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background: radial-gradient(circle at 15% 15%, var(--bg-gradient-1) 0%, transparent 50%),
+                  radial-gradient(circle at 85% 30%, var(--bg-gradient-2) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 85%, var(--bg-gradient-3) 0%, transparent 55%);
+      filter: blur(60px);
+      animation: meshFloat 18s ease-in-out infinite alternate;
+      opacity: 0.85;
+    }
 
-        /* Organic Dynamic Ambient Fluid Background */
-        .ambient-canvas-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
+    @keyframes meshFloat {
+      0% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.1) translate(-2%, 3%); }
+      100% { transform: scale(1.05) translate(3%, -2%); }
+    }
 
-        .fluid-orb {
-            position: absolute;
-            filter: blur(80px);
-            opacity: 0.6;
-            border-radius: 50%;
-            transition: all 1s ease;
-        }
+    /* Apple Liquid Glass Core Styles */
+    .liquid-glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 
+        inset 0 1.5px 1px 0 var(--specular-top),
+        inset 0 -1.5px 1px 0 var(--specular-bottom),
+        var(--glass-shadow);
+      position: relative;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                  box-shadow 0.35s ease, 
+                  background-color 0.3s ease;
+    }
 
-        /* -------------------------------------------------------------
-           APPLE LIQUID GLASS (iOS 26 REFRACTION & SPECULAR SHADER FILTER)
-        ------------------------------------------------------------- */
-        .liquid-glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(32px) saturate(210%) brightness(1.1);
-            -webkit-backdrop-filter: blur(32px) saturate(210%) brightness(1.1);
-            border: 1px solid var(--glass-border);
-            box-shadow: 
-                inset 0 1.5px 1px 0 var(--glass-specular),
-                inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.2),
-                var(--glass-shadow);
-            position: relative;
-            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                        box-shadow 0.35s ease, 
-                        border-color 0.35s ease;
-        }
+    .liquid-glass-interactive:hover {
+      background: var(--glass-bg-hover);
+      transform: translateY(-4px) scale(1.015);
+      box-shadow: 
+        inset 0 2px 2px 0 var(--specular-top),
+        inset 0 -1px 2px 0 var(--specular-bottom),
+        0 25px 45px -10px rgba(0, 0, 0, 0.25);
+    }
 
-        /* Refraction lens effect using SVG displacement */
-        .liquid-glass-lens {
-            backdrop-filter: url(#liquid-refraction) blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-        }
+    /* Refraction subtle SVG filter class (Optional enhancement) */
+    .refract-effect {
+      filter: url(#liquid-refraction);
+    }
 
-        .liquid-glass-pill {
-            border-radius: 9999px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(28px) saturate(190%);
-            -webkit-backdrop-filter: blur(28px) saturate(190%);
-            border: 1px solid var(--glass-border);
-            box-shadow: 
-                inset 0 1px 1px 0 var(--glass-specular),
-                0 12px 35px rgba(0, 0, 0, 0.3);
-        }
+    /* Specular Light Spotlight overlay following mouse cursor */
+    .spotlight-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      top: var(--mouse-y, 50%);
+      left: var(--mouse-x, 50%);
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 50%;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
 
-        /* Interactive Liquid Physics Hover/Press */
-        .liquid-interactive {
-            cursor: pointer;
-            will-change: transform;
-        }
-        .liquid-interactive:hover {
-            transform: scale(1.025) translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 
-                inset 0 2px 2px 0 rgba(255, 255, 255, 0.9),
-                0 15px 40px var(--liquid-glow);
-        }
-        .liquid-interactive:active {
-            transform: scale(0.96) translateY(1px);
-            transition: transform 0.1s ease;
-        }
+    /* Custom Scrollbar for horizontal carousels */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
 
-        /* Specular Dynamic Shimmer Light Edge */
-        .liquid-glass::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 60%);
-            border-top-left-radius: inherit;
-            border-top-right-radius: inherit;
-            pointer-events: none;
-        }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 10px;
+    }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.4);
-        }
+    /* Spring Animations */
+    .spring-btn {
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s ease;
+    }
+    .spring-btn:active {
+      transform: scale(0.92);
+    }
 
-        /* Reels Fullscreen Scroll Snap */
-        .reels-container {
-            scroll-snap-type: y mandatory;
-            overflow-y: scroll;
-            height: calc(100vh - 90px);
-        }
-        .reel-card {
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
-        /* Bottom Tab Morphing Bubble */
-        .tab-indicator {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.7), rgba(0, 240, 255, 0.7));
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
-        }
-
-        /* Skeleton shimmer */
-        .skeleton {
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.05) 75%);
-            background-size: 200% 100%;
-            animation: skeleton-load 1.8s infinite;
-        }
-        @keyframes skeleton-load {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-    </style>
+    /* Reduced Motion Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      .mesh-background { animation: none; }
+      .liquid-glass, .spring-btn, .liquid-glass-interactive { transition: none !important; }
+    }
+  </style>
 </head>
-<body class="relative min-h-screen pb-28 text-slate-100 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+<body class="min-h-screen flex flex-col relative selection:bg-indigo-500 selection:text-white">
 
-    <!-- SVG DISPLACEMENT REFRACTION FILTER FOR APPLE LIQUID GLASS LENS -->
-    <svg class="hidden" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <filter id="liquid-refraction" x="-20%" y="-20%" width="140%" height="140%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="16" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
+  <!-- SVG Refraction Filter for Liquid Glass Lensing Effect -->
+  <svg class="hidden" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="liquid-refraction" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
 
-    <!-- AMBIENT BACKGROUND ORBS -->
-    <div class="ambient-canvas-bg" id="ambientBg">
-        <div class="fluid-orb bg-indigo-600/40 w-[500px] h-[500px] -top-32 -left-32 animate-pulse-slow"></div>
-        <div class="fluid-orb bg-purple-600/30 w-[600px] h-[600px] top-1/2 -right-40 animate-liquid-morph"></div>
-        <div class="fluid-orb bg-cyan-500/30 w-[450px] h-[450px] bottom-10 left-1/3 animate-float"></div>
+  <!-- Animated Background Mesh -->
+  <div class="mesh-background" aria-hidden="true"></div>
+
+  <!-- FIXED FLOATING LIQUID GLASS NAVBAR -->
+  <header class="fixed top-4 inset-x-0 mx-auto w-[92%] max-w-6xl z-50">
+    <nav class="liquid-glass rounded-full px-4 sm:px-6 py-3 flex items-center justify-between shadow-2xl">
+      
+      <!-- Brand Identity -->
+      <a href="#" onclick="switchTab('home')" class="flex items-center gap-2 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 p-[2px] shadow-lg shadow-indigo-500/30 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
+            <i data-lucide="clapperboard" class="w-5 h-5 text-indigo-400"></i>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-extrabold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            FilmKu
+          </span>
+          <span class="text-[9px] font-medium tracking-widest uppercase text-muted -mt-1 hidden sm:inline">Cinema Hub</span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links -->
+      <div class="hidden md:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1 rounded-full border border-white/10">
+        <button id="nav-home" onclick="switchTab('home')" class="nav-item-btn px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 bg-indigo-600 text-white shadow-md shadow-indigo-500/20">
+          <i data-lucide="home" class="w-4 h-4 inline-block mr-1.5"></i>Beranda
+        </button>
+        <button id="nav-search" onclick="switchTab('search')" class="nav-item-btn px-5 py-2 rounded-full text-sm font-semibold text-muted hover:text-main transition-all duration-300">
+          <i data-lucide="compass" class="w-4 h-4 inline-block mr-1.5"></i>Jelajah
+        </button>
+        <button id="nav-watchlist" onclick="switchTab('watchlist')" class="nav-item-btn px-5 py-2 rounded-full text-sm font-semibold text-muted hover:text-main transition-all duration-300 relative">
+          <i data-lucide="bookmark" class="w-4 h-4 inline-block mr-1.5"></i>Watchlist
+          <span id="watchlist-badge" class="ml-1.5 px-2 py-0.5 text-xs font-bold bg-indigo-500 text-white rounded-full">0</span>
+        </button>
+      </div>
+
+      <!-- Right Controls: Quick Search + Theme Switcher -->
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('search')" class="md:hidden p-2.5 rounded-full liquid-glass text-muted hover:text-main spring-btn" title="Cari Film">
+          <i data-lucide="search" class="w-5 h-5"></i>
+        </button>
+
+        <button id="theme-toggle-btn" onclick="toggleTheme()" class="p-2.5 rounded-full liquid-glass text-amber-500 dark:text-indigo-400 hover:scale-110 spring-btn shadow-md" title="Ganti Tema">
+          <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+        </button>
+
+        <!-- Mobile Menu Trigger -->
+        <div class="md:hidden flex items-center">
+          <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2.5 rounded-full liquid-glass text-main spring-btn">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Dropdown (Glass Panel) -->
+    <div id="mobile-menu" class="hidden mt-3 liquid-glass rounded-2xl p-4 flex-col gap-2 shadow-2xl transition-all border border-white/20">
+      <button onclick="switchTab('home'); toggleMobileMenu();" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-500/10 font-semibold">
+        <i data-lucide="home" class="w-5 h-5 text-indigo-500"></i> Beranda
+      </button>
+      <button onclick="switchTab('search'); toggleMobileMenu();" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-indigo-500/10 font-semibold">
+        <i data-lucide="compass" class="w-5 h-5 text-indigo-500"></i> Jelajah & Cari
+      </button>
+      <button onclick="switchTab('watchlist'); toggleMobileMenu();" class="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-indigo-500/10 font-semibold">
+        <div class="flex items-center gap-3">
+          <i data-lucide="bookmark" class="w-5 h-5 text-indigo-500"></i> Watchlist Saya
+        </div>
+        <span id="mobile-watchlist-badge" class="px-2.5 py-0.5 text-xs font-bold bg-indigo-500 text-white rounded-full">0</span>
+      </button>
     </div>
+  </header>
 
-    <!-- MAIN APP WRAPPER -->
-    <div id="app" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
 
-        <!-- TOP BAR / HEADER -->
-        <header class="sticky top-4 z-40 mb-6 transition-all duration-300" id="mainHeader">
-            <div class="liquid-glass rounded-3xl px-5 py-3.5 flex items-center justify-between shadow-2xl backdrop-blur-2xl">
-                <!-- LOGO & BRAND -->
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-pink-500 to-cyan-400 p-0.5 shadow-lg shadow-indigo-500/30 flex items-center justify-center animate-pulse-slow">
-                        <div class="w-full h-full bg-slate-950/80 rounded-[14px] flex items-center justify-center">
-                            <i class="fa-solid font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 fa-play text-sm"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-100 to-slate-400">
-                            Cine<span class="text-cyan-400 font-extrabold">Flash</span>
-                        </h1>
-                        <p class="text-[10px] text-cyan-300/80 tracking-wider uppercase font-semibold">Liquid Glass iOS 26</p>
-                    </div>
-                </div>
+    <!-- VIEW 1: BERANDA (HOME) -->
+    <section id="view-home" class="space-y-12">
+      
+      <!-- HERO FEATURED MOVIE (DYNAMIC GLASS CARD) -->
+      <div id="hero-banner" class="relative rounded-3xl overflow-hidden shadow-2xl min-h-[460px] md:min-h-[520px] flex items-end border border-white/20 spotlight-card group">
+        <!-- Hero Background Artwork -->
+        <img id="hero-bg" src="" alt="Hero Backdrop" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
 
-                <!-- DESKTOP QUICK SEARCH BAR -->
-                <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
-                    <div class="relative w-full">
-                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                        <input type="text" id="headerSearchInput" placeholder="Cari film, aktor, genre..." 
-                            class="w-full bg-slate-950/40 border border-white/10 rounded-full pl-11 pr-4 py-2 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400/60 focus:ring-2 focus:ring-cyan-500/20 transition-all">
-                    </div>
-                </div>
-
-                <!-- RIGHT CONTROLS -->
-                <div class="flex items-center space-x-3">
-                    <!-- API & Firebase Settings Modal Trigger -->
-                    <button onclick="openSettingsModal()" class="liquid-glass liquid-interactive w-10 h-10 rounded-full flex items-center justify-center text-slate-300 hover:text-white" title="Pengaturan Key TMDB & Firebase">
-                        <i class="fa-solid fa-sliders text-sm"></i>
-                    </button>
-
-                    <!-- Theme Toggle Button -->
-                    <button id="themeToggleBtn" onclick="toggleTheme()" class="liquid-glass liquid-interactive w-10 h-10 rounded-full flex items-center justify-center text-amber-300 hover:text-amber-200" title="Ganti Mode Terang/Gelap">
-                        <i class="fa-solid fa-sun text-sm" id="themeIcon"></i>
-                    </button>
-
-                    <!-- User Account / Auth Profile -->
-                    <div id="userHeaderBadge">
-                        <button onclick="openAuthModal()" class="liquid-glass liquid-interactive px-4 py-2 rounded-full text-xs font-semibold bg-indigo-600/30 border border-indigo-400/40 text-indigo-200 hover:bg-indigo-600/50 flex items-center space-x-2">
-                            <i class="fa-solid fa-user-lock"></i>
-                            <span>Masuk</span>
-                        </button>
-                    </div>
-                </div>
+        <!-- Floating Glass Card Inside Hero -->
+        <div class="relative z-10 p-6 sm:p-10 w-full">
+          <div class="max-w-2xl space-y-4">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500 text-white shadow-lg shadow-indigo-500/40">
+                Unggulan Minggu Ini
+              </span>
+              <span id="hero-type" class="liquid-glass px-3 py-1 rounded-full text-xs font-semibold text-white/90">
+                Film
+              </span>
+              <span id="hero-year" class="liquid-glass px-3 py-1 rounded-full text-xs font-semibold text-white/90">
+                2024
+              </span>
+              <div class="flex items-center gap-1 text-amber-400 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border border-white/10">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i>
+                <span id="hero-rating">8.9</span>
+              </div>
             </div>
-        </header>
 
-        <!-- MAIN CONTENT CONTAINER (PAGES) -->
-        <main id="mainContainer">
-            
-            <!-- 1. HOME VIEW -->
-            <section id="view-home" class="tab-view space-y-8">
-                <!-- HERO FEATURED BANNER CAROUSEL -->
-                <div id="heroBanner" class="relative w-full h-[480px] rounded-3xl overflow-hidden liquid-glass shadow-2xl group">
-                    <div class="absolute inset-0 skeleton" id="heroSkeleton"></div>
-                    <img id="heroImage" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="" alt="Hero Backdrop">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/30 to-transparent"></div>
+            <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
+              Dune: Part Two
+            </h1>
 
-                    <!-- HERO CONTENT -->
-                    <div class="absolute bottom-0 left-0 p-6 sm:p-10 max-w-2xl space-y-4">
-                        <div class="flex items-center space-x-3">
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 backdrop-blur-md">
-                                <i class="fa-solid fa-fire text-amber-400 mr-1"></i> UNGGULAN HARI INI
-                            </span>
-                            <span id="heroRating" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                <i class="fa-solid fa-star text-amber-400 mr-1"></i> 8.8
-                            </span>
-                            <span id="heroYear" class="text-xs text-slate-300 font-medium">2024</span>
-                        </div>
+            <p id="hero-synopsis" class="text-sm sm:text-base text-gray-200 line-clamp-3 font-normal leading-relaxed drop-shadow">
+              Paul Atreides bersatu kembali dengan Chani dan suku Fremen saat membalas dendam terhadap para konspirator yang menghancurkan keluarganya.
+            </p>
 
-                        <h2 id="heroTitle" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white drop-shadow-md">
-                            Dune: Part Two
-                        </h2>
-
-                        <p id="heroOverview" class="text-sm text-slate-300 line-clamp-3 leading-relaxed drop-shadow">
-                            Paul Atreides bersatu kembali dengan Chani dan suku Fremen saat dia melakukan perjalan balas dendam terhadap para konspirator yang menghancurkan keluarganya.
-                        </p>
-
-                        <!-- HERO ACTION BUTTONS -->
-                        <div class="flex flex-wrap items-center gap-3 pt-2">
-                            <button id="heroTrailerBtn" onclick="playTrailerCurrentHero()" class="liquid-glass liquid-interactive px-6 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-bold text-sm shadow-lg shadow-cyan-500/30 flex items-center space-x-2">
-                                <i class="fa-solid fa-play"></i>
-                                <span>Tonton Canvas Trailer</span>
-                            </button>
-                            <button id="heroDetailBtn" onclick="showMovieDetails(currentHeroId)" class="liquid-glass liquid-interactive px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-md flex items-center space-x-2">
-                                <i class="fa-solid fa-circle-info"></i>
-                                <span>Detail Film</span>
-                            </button>
-                            <button onclick="toggleWatchlistCurrentHero()" class="liquid-glass liquid-interactive w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center backdrop-blur-md" title="Tambah ke Watchlist">
-                                <i id="heroWatchlistIcon" class="fa-regular fa-bookmark text-base"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CATEGORY / GENRE PILL SELECTOR -->
-                <div class="flex items-center space-x-3 overflow-x-auto pb-2 scrollbar-none">
-                    <button onclick="filterHomeGenre(0, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-bold text-white bg-indigo-600/50 border-indigo-400/50 flex-shrink-0">Semua Genre</button>
-                    <button onclick="filterHomeGenre(28, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-medium text-slate-300 hover:text-white flex-shrink-0">Aksi</button>
-                    <button onclick="filterHomeGenre(878, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-medium text-slate-300 hover:text-white flex-shrink-0">Sci-Fi</button>
-                    <button onclick="filterHomeGenre(18, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-medium text-slate-300 hover:text-white flex-shrink-0">Drama</button>
-                    <button onclick="filterHomeGenre(35, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-medium text-slate-300 hover:text-white flex-shrink-0">Komedi</button>
-                    <button onclick="filterHomeGenre(27, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-medium text-slate-300 hover:text-white flex-shrink-0">Horor</button>
-                    <button onclick="filterHomeGenre(16, this)" class="genre-pill liquid-glass-pill px-5 py-2.5 text-xs font-medium text-slate-300 hover:text-white flex-shrink-0">Animasi</button>
-                </div>
-
-                <!-- MOVIE CAROUSEL 1: TRENDING -->
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold flex items-center space-x-2">
-                            <span class="w-2.5 h-6 bg-gradient-to-b from-indigo-500 to-cyan-400 rounded-full inline-block"></span>
-                            <span>Sedang Trending</span>
-                        </h3>
-                        <button onclick="switchTab('explore')" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center space-x-1">
-                            <span>Lihat Semua</span>
-                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                        </button>
-                    </div>
-                    <div id="carouselTrending" class="flex space-x-4 overflow-x-auto pb-4 pt-1 scrollbar-none">
-                        <!-- Dynamic Movie Cards Rendered Here -->
-                    </div>
-                </div>
-
-                <!-- MOVIE CAROUSEL 2: TOP RATED -->
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold flex items-center space-x-2">
-                            <span class="w-2.5 h-6 bg-gradient-to-b from-amber-500 to-rose-500 rounded-full inline-block"></span>
-                            <span>Rating Tertinggi (Top Rated)</span>
-                        </h3>
-                    </div>
-                    <div id="carouselTopRated" class="flex space-x-4 overflow-x-auto pb-4 pt-1 scrollbar-none">
-                        <!-- Dynamic Cards -->
-                    </div>
-                </div>
-            </section>
-
-            <!-- 2. EXPLORE / LIBRARY VIEW -->
-            <section id="view-explore" class="tab-view hidden space-y-6">
-                <!-- SEARCH & FILTER HEADER -->
-                <div class="liquid-glass rounded-3xl p-6 space-y-4">
-                    <h2 class="text-2xl font-bold">Jelajah Perpustakaan Film</h2>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                        <!-- Search Box -->
-                        <div class="relative">
-                            <input type="text" id="exploreSearchInput" onkeyup="handleExploreSearch()" placeholder="Cari judul..." 
-                                class="w-full bg-slate-900/60 border border-white/10 rounded-2xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                        </div>
-
-                        <!-- Genre Filter -->
-                        <div>
-                            <select id="filterGenre" onchange="applyExploreFilters()" class="w-full bg-slate-900/60 border border-white/10 rounded-2xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                                <option value="all">Semua Genre</option>
-                                <option value="28">Aksi</option>
-                                <option value="878">Sci-Fi</option>
-                                <option value="18">Drama</option>
-                                <option value="35">Komedi</option>
-                                <option value="27">Horor</option>
-                            </select>
-                        </div>
-
-                        <!-- Rating Filter -->
-                        <div>
-                            <select id="filterRating" onchange="applyExploreFilters()" class="w-full bg-slate-900/60 border border-white/10 rounded-2xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                                <option value="0">Semua Rating</option>
-                                <option value="8">8.0+ ⭐ Star</option>
-                                <option value="8.5">8.5+ ⭐ Masterpiece</option>
-                            </select>
-                        </div>
-
-                        <!-- Sort Options -->
-                        <div>
-                            <select id="filterSort" onchange="applyExploreFilters()" class="w-full bg-slate-900/60 border border-white/10 rounded-2xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                                <option value="pop_desc">Populer (Tinggi ke Rendah)</option>
-                                <option value="rating_desc">Rating Teratas</option>
-                                <option value="year_desc">Rilis Terbaru</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MOVIE GRID -->
-                <div id="exploreGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-                    <!-- Dynamic Grid Items -->
-                </div>
-            </section>
-
-            <!-- 3. REELS VIEW (VERTICAL MOVIE SHORTS) -->
-            <section id="view-reels" class="tab-view hidden max-w-md mx-auto">
-                <div id="reelsContainer" class="reels-container space-y-6 rounded-3xl overflow-hidden shadow-2xl">
-                    <!-- Dynamic Reels Cards -->
-                </div>
-            </section>
-
-            <!-- 4. CHAT GLOBAL & STREAKS VIEW -->
-            <section id="view-chat" class="tab-view hidden space-y-6 max-w-4xl mx-auto">
-                <!-- STREAK CARD BANNER -->
-                <div class="liquid-glass rounded-3xl p-6 bg-gradient-to-r from-amber-500/10 via-indigo-600/20 to-cyan-500/10 border border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-2xl shadow-lg shadow-amber-500/30 animate-bounce">
-                            🔥
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-amber-200">Movie Streak Harian</h3>
-                            <p class="text-xs text-slate-300">Nonton atau diskusi film setiap hari untuk menjaga api streak!</p>
-                            <div class="flex items-center space-x-2 mt-2">
-                                <div class="w-32 bg-slate-950/60 rounded-full h-2 overflow-hidden border border-amber-500/30">
-                                    <div class="bg-gradient-to-r from-amber-400 to-rose-500 h-full w-[80%]" id="streakProgressBar"></div>
-                                </div>
-                                <span class="text-xs font-extrabold text-amber-400" id="streakDaysCount">5 Hari 🔥</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="claimDailyStreak()" class="liquid-glass liquid-interactive px-6 py-3 rounded-2xl bg-amber-500/30 border border-amber-400/50 text-amber-200 font-bold text-xs hover:bg-amber-500/50 flex flex-shrink-0 items-center space-x-2">
-                        <i class="fa-solid fa-bolt"></i>
-                        <span>Check-in Streak Hari Ini</span>
-                    </button>
-                </div>
-
-                <!-- GLOBAL CHAT CONTAINER -->
-                <div class="liquid-glass rounded-3xl h-[520px] flex flex-col overflow-hidden">
-                    <!-- CHAT HEADER -->
-                    <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-slate-950/40">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></div>
-                            <h3 class="font-bold text-sm">Ruang Chat Komunitas CineFlash</h3>
-                        </div>
-                        <span class="text-xs text-slate-400"><i class="fa-solid fa-users mr-1"></i> 142 Penggemar Aktif</span>
-                    </div>
-
-                    <!-- MESSAGES FEED -->
-                    <div id="chatMessagesFeed" class="flex-1 p-6 overflow-y-auto space-y-4">
-                        <!-- Dynamic Messages -->
-                    </div>
-
-                    <!-- TYPING INDICATOR -->
-                    <div id="typingIndicator" class="px-6 py-1 text-[11px] text-cyan-400/80 italic hidden">
-                        Seseorang sedang mengetik...
-                    </div>
-
-                    <!-- CHAT INPUT FORM -->
-                    <form onsubmit="handleSendChatMessage(event)" class="p-4 border-t border-white/10 bg-slate-950/60 flex items-center space-x-3">
-                        <input type="text" id="chatInput" placeholder="Diskusi film favoritmu di sini..." 
-                            class="flex-1 bg-slate-900/80 border border-white/10 rounded-2xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400">
-                        <button type="submit" class="liquid-glass liquid-interactive w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-600/40">
-                            <i class="fa-solid fa-paper-plane text-sm"></i>
-                        </button>
-                    </form>
-                </div>
-            </section>
-
-            <!-- 5. USER PROFILE & LISTS VIEW -->
-            <section id="view-profile" class="tab-view hidden space-y-6 max-w-4xl mx-auto">
-                <div class="liquid-glass rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                    <div class="relative">
-                        <img id="profileAvatar" class="w-24 h-24 rounded-3xl object-cover border-2 border-cyan-400/50 shadow-xl" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" alt="User Avatar">
-                        <div class="absolute -bottom-2 -right-2 bg-amber-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded-full border border-white">
-                            PRO
-                        </div>
-                    </div>
-
-                    <div class="flex-1 text-center sm:text-left space-y-1">
-                        <h2 id="profileName" class="text-2xl font-bold">Sinematra User</h2>
-                        <p id="profileEmail" class="text-xs text-slate-400">user@cineflash.app</p>
-                        <div class="flex flex-wrap justify-center sm:justify-start gap-2 pt-2">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                                🔥 5 Day Streak
-                            </span>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                                🎬 18 Film Ditonton
-                            </span>
-                        </div>
-                    </div>
-
-                    <button onclick="handleSignOut()" class="liquid-glass liquid-interactive px-4 py-2 rounded-2xl text-xs font-bold bg-rose-500/20 border border-rose-500/40 text-rose-300 hover:bg-rose-500/40">
-                        <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
-                    </button>
-                </div>
-
-                <!-- USER LIST TABS (WATCHLIST, FAVORITES, WATCHED) -->
-                <div class="liquid-glass rounded-3xl p-6 space-y-4">
-                    <div class="flex border-b border-white/10 space-x-6">
-                        <button onclick="switchUserList('watchlist', this)" class="user-list-tab text-sm font-bold text-cyan-400 border-b-2 border-cyan-400 pb-3">Watchlist Saya</button>
-                        <button onclick="switchUserList('favorites', this)" class="user-list-tab text-sm font-semibold text-slate-400 hover:text-white pb-3">Favorit</button>
-                        <button onclick="switchUserList('watched', this)" class="user-list-tab text-sm font-semibold text-slate-400 hover:text-white pb-3">Sudah Ditonton</button>
-                    </div>
-
-                    <div id="userListGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                        <!-- User list movies -->
-                    </div>
-                </div>
-            </section>
-
-        </main>
-
-        <!-- FLOATING BOTTOM NAVIGATION BAR (NETFLIX / iOS 26 LIQUID PILL) -->
-        <nav id="bottomNav" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 w-[92%] max-w-lg">
-            <div class="liquid-glass-pill p-2 relative flex items-center justify-around shadow-2xl backdrop-blur-3xl border border-white/20">
-                
-                <!-- MORPHING LIQUID BUBBLE INDICATOR -->
-                <div id="tabIndicator" class="tab-indicator absolute h-11 w-16 rounded-full top-2 left-2 z-0"></div>
-
-                <!-- TAB BUTTONS -->
-                <button onclick="switchTab('home')" class="nav-tab-btn relative z-10 w-16 h-11 flex flex-col items-center justify-center text-white" title="Beranda">
-                    <i class="fa-solid fa-house text-base"></i>
-                    <span class="text-[9px] font-bold mt-0.5">Beranda</span>
-                </button>
-
-                <button onclick="switchTab('explore')" class="nav-tab-btn relative z-10 w-16 h-11 flex flex-col items-center justify-center text-slate-400 hover:text-white" title="Jelajah">
-                    <i class="fa-solid fa-compass text-base"></i>
-                    <span class="text-[9px] font-medium mt-0.5">Jelajah</span>
-                </button>
-
-                <button onclick="switchTab('reels')" class="nav-tab-btn relative z-10 w-16 h-11 flex flex-col items-center justify-center text-slate-400 hover:text-white" title="Reels Trailer">
-                    <i class="fa-solid fa-clapperboard text-base"></i>
-                    <span class="text-[9px] font-medium mt-0.5">Reels</span>
-                </button>
-
-                <button onclick="switchTab('chat')" class="nav-tab-btn relative z-10 w-16 h-11 flex flex-col items-center justify-center text-slate-400 hover:text-white" title="Chat & Streak">
-                    <i class="fa-solid fa-comments text-base"></i>
-                    <span class="text-[9px] font-medium mt-0.5">Chat</span>
-                </button>
-
-                <button onclick="switchTab('profile')" class="nav-tab-btn relative z-10 w-16 h-11 flex flex-col items-center justify-center text-slate-400 hover:text-white" title="Profil">
-                    <i class="fa-solid fa-user text-base"></i>
-                    <span class="text-[9px] font-medium mt-0.5">Profil</span>
-                </button>
+            <div class="pt-2 flex flex-wrap items-center gap-4">
+              <button id="hero-detail-btn" class="px-6 py-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold text-sm shadow-xl shadow-indigo-500/30 flex items-center gap-2 spring-btn">
+                <i data-lucide="info" class="w-4 h-4"></i> Lihat Detail
+              </button>
+              <button id="hero-watchlist-btn" class="liquid-glass px-6 py-3 rounded-full text-white hover:bg-white/20 font-semibold text-sm flex items-center gap-2 spring-btn border border-white/30">
+                <i data-lucide="bookmark-plus" class="w-4 h-4"></i> + Watchlist
+              </button>
             </div>
-        </nav>
+          </div>
+        </div>
+      </div>
 
-    </div>
+      <!-- CAROUSEL SECTION 1: SEDANG TREN -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-7 bg-indigo-500 rounded-full shadow-md shadow-indigo-500/50"></div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight">🔥 Sedang Tren</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollCarousel('carousel-trending', -300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollCarousel('carousel-trending', 300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+        <div id="carousel-trending" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1">
+          <!-- Populated by JS -->
+        </div>
+      </section>
 
-    <!-- -------------------------------------------------------------
-       MODALS & OVERLAYS
-    ------------------------------------------------------------- -->
+      <!-- CAROUSEL SECTION 2: RILIS TERBARU -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-7 bg-purple-500 rounded-full shadow-md shadow-purple-500/50"></div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight">✨ Rilis Terbaru</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollCarousel('carousel-latest', -300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollCarousel('carousel-latest', 300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+        <div id="carousel-latest" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1">
+          <!-- Populated by JS -->
+        </div>
+      </section>
 
-    <!-- 1. CANVAS TRAILER MODAL WITH DYNAMIC AMBILIGHT -->
-    <div id="canvasTrailerModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-8 bg-slate-950/90 backdrop-blur-2xl">
-        <!-- CANVAS AMBILIGHT BACKGROUND -->
-        <canvas id="ambilightCanvas" class="absolute inset-0 w-full h-full opacity-60 pointer-events-none"></canvas>
+      <!-- CAROUSEL SECTION 3: RATING TERTINGGI -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-7 bg-amber-500 rounded-full shadow-md shadow-amber-500/50"></div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight">⭐ Rating Tertinggi</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollCarousel('carousel-top', -300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollCarousel('carousel-top', 300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+        <div id="carousel-top" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- CAROUSEL SECTION 4: SERIAL POPULER -->
+      <section class="space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-7 bg-pink-500 rounded-full shadow-md shadow-pink-500/50"></div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight">📺 Serial TV Populer</h2>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="scrollCarousel('carousel-series', -300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="scrollCarousel('carousel-series', 300)" class="p-2 rounded-full liquid-glass text-muted hover:text-main spring-btn">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+        <div id="carousel-series" class="flex gap-5 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+    </section>
+
+    <!-- VIEW 2: SEARCH & EXPLORE -->
+    <section id="view-search" class="hidden space-y-8">
+      
+      <!-- Liquid Glass Filter Floating Control Panel -->
+      <div class="liquid-glass rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl border border-white/20">
         
-        <div class="relative w-full max-w-5xl liquid-glass rounded-3xl overflow-hidden shadow-2xl border border-white/20 z-10">
-            <!-- MODAL HEADER -->
-            <div class="p-4 px-6 flex items-center justify-between border-b border-white/10 bg-slate-950/40">
-                <div class="flex items-center space-x-3">
-                    <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
-                    <h3 id="modalTrailerTitle" class="font-bold text-lg text-white">Canvas Trailer Player</h3>
-                </div>
-                <button onclick="closeTrailerModal()" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-slate-300 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-
-            <!-- YOUTUBE IFRAME PLAYER -->
-            <div class="relative aspect-video w-full bg-black">
-                <iframe id="trailerIframe" class="w-full h-full" src="" title="Trailer Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-
-            <!-- CUSTOM LIQUID GLASS MEDIA CONTROLS OVERLAY -->
-            <div class="p-4 bg-slate-950/70 border-t border-white/10 flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <button onclick="toggleTrailerPlay()" class="liquid-glass w-10 h-10 rounded-full flex items-center justify-center text-cyan-400 hover:text-white">
-                        <i class="fa-solid fa-pause text-sm"></i>
-                    </button>
-                    <span class="text-xs font-semibold text-slate-300">Resolusi HQ Canvas Ambilight Enabled</span>
-                </div>
-                <button onclick="toggleTrailerFullscreen()" class="liquid-glass px-4 py-2 rounded-2xl text-xs font-bold text-white flex items-center space-x-1">
-                    <i class="fa-solid fa-expand"></i>
-                    <span>Layar Penuh</span>
-                </button>
-            </div>
+        <!-- Live Search Bar Input -->
+        <div class="relative">
+          <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted"></i>
+          <input type="text" id="search-input" oninput="applyFilters()" placeholder="Cari judul film, serial TV, sutradara, atau pemeran..." class="w-full pl-12 pr-10 py-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-main placeholder-muted text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+          <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-main">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
         </div>
-    </div>
 
-    <!-- 2. MOVIE DETAIL MODAL -->
-    <div id="movieDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 bg-slate-950/80 backdrop-blur-xl overflow-y-auto">
-        <div class="relative w-full max-w-4xl liquid-glass rounded-3xl overflow-hidden shadow-2xl border border-white/20 my-8">
-            <button onclick="closeMovieDetailModal()" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-white bg-slate-950/50">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+        <!-- Filter Controls Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+          
+          <!-- Media Type Switcher -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted mb-2">Tipe Konten</label>
+            <select id="filter-type" onchange="applyFilters()" class="w-full px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-main text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="all">Semua Konten</option>
+              <option value="movie">Film Saja</option>
+              <option value="tv">Serial TV Saja</option>
+            </select>
+          </div>
 
-            <!-- BACKDROP HERO -->
-            <div class="relative h-64 sm:h-80 w-full">
-                <img id="detailBackdrop" class="w-full h-full object-cover" src="" alt="Detail Backdrop">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
-            </div>
+          <!-- Genre Filter -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted mb-2">Genre</label>
+            <select id="filter-genre" onchange="applyFilters()" class="w-full px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-main text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="all">Semua Genre</option>
+              <option value="Aksi">Aksi</option>
+              <option value="Sci-Fi">Sci-Fi</option>
+              <option value="Drama">Drama</option>
+              <option value="Petualangan">Petualangan</option>
+              <option value="Komedi">Komedi</option>
+              <option value="Horor">Horor</option>
+              <option value="Animasi">Animasi</option>
+            </select>
+          </div>
 
-            <!-- CONTENT BODY -->
-            <div class="p-6 sm:p-8 space-y-6 -mt-20 relative z-10">
-                <div class="flex flex-col sm:flex-row gap-6 items-start">
-                    <img id="detailPoster" class="w-40 h-60 rounded-2xl object-cover shadow-2xl border-2 border-white/20 flex-shrink-0" src="" alt="Poster">
-                    
-                    <div class="space-y-3 flex-1">
-                        <h2 id="detailTitle" class="text-3xl font-extrabold text-white">Judul Film</h2>
-                        
-                        <div class="flex flex-wrap items-center gap-2 text-xs">
-                            <span id="detailRating" class="px-2.5 py-1 rounded-full font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                                ⭐ 8.5
-                            </span>
-                            <span id="detailYear" class="text-slate-300 font-medium">2024</span>
-                            <span id="detailDuration" class="text-slate-300 font-medium">2j 46m</span>
-                        </div>
+          <!-- Minimum Rating Filter -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted mb-2">Rating Minimum</label>
+            <select id="filter-rating" onchange="applyFilters()" class="w-full px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-main text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="0">Semua Rating</option>
+              <option value="8.5">⭐ 8.5+ (Sangat Bagus)</option>
+              <option value="8.0">⭐ 8.0+ (Bagus)</option>
+              <option value="7.5">⭐ 7.5+ (Lumayan)</option>
+            </select>
+          </div>
 
-                        <div id="detailGenres" class="flex flex-wrap gap-2 pt-1">
-                            <!-- Genre pills -->
-                        </div>
+          <!-- Sort Order Filter -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-muted mb-2">Urutkan Berdasarkan</label>
+            <select id="filter-sort" onchange="applyFilters()" class="w-full px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-main text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="rating-desc">Rating Tertinggi</option>
+              <option value="year-desc">Tahun Terbaru</option>
+              <option value="year-asc">Tahun Terlama</option>
+              <option value="title-asc">Judul (A-Z)</option>
+            </select>
+          </div>
 
-                        <p id="detailOverview" class="text-sm text-slate-300 leading-relaxed">
-                            Sinopsis film akan ditampilkan di sini secara detail...
-                        </p>
-
-                        <!-- USER ACTION BUTTONS -->
-                        <div class="flex flex-wrap gap-3 pt-3">
-                            <button id="detailTrailerBtn" class="liquid-glass liquid-interactive px-5 py-2.5 rounded-2xl bg-indigo-600 text-white font-bold text-xs flex items-center space-x-2">
-                                <i class="fa-solid fa-play"></i>
-                                <span>Canvas Trailer</span>
-                            </button>
-                            <button id="detailWatchlistBtn" onclick="toggleWatchlistDetail()" class="liquid-glass liquid-interactive px-4 py-2.5 rounded-2xl bg-white/10 text-xs font-semibold text-white flex items-center space-x-1">
-                                <i class="fa-regular fa-bookmark"></i>
-                                <span>Watchlist</span>
-                            </button>
-                            <button id="detailFavoriteBtn" onclick="toggleFavoriteDetail()" class="liquid-glass liquid-interactive px-4 py-2.5 rounded-2xl bg-white/10 text-xs font-semibold text-rose-300 flex items-center space-x-1">
-                                <i class="fa-regular fa-heart"></i>
-                                <span>Favorit</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- USER RATING (1-10 STARS) -->
-                <div class="liquid-glass rounded-2xl p-4 space-y-2">
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-300">Beri Rating Film Ini (1 - 10 Bintang)</h4>
-                    <div class="flex items-center space-x-2 text-amber-400 text-lg cursor-pointer" id="userStarPicker">
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(1)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(2)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(3)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(4)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(5)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(6)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(7)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(8)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(9)"></i>
-                        <i class="fa-regular fa-star hover:scale-125 transition-transform" onclick="rateMovie(10)"></i>
-                        <span id="userGivenRating" class="text-xs font-bold text-white ml-2">Belum diberi rating</span>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
+      </div>
 
-    <!-- 3. AUTHENTICATION MODAL (SIGN-IN & SIGN-UP) -->
-    <div id="authModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl">
-        <div class="relative w-full max-w-md liquid-glass rounded-3xl p-6 sm:p-8 space-y-6 border border-white/20 shadow-2xl">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full liquid-glass flex items-center justify-center text-slate-300 hover:text-white">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+      <!-- Search Results Header Info -->
+      <div class="flex items-center justify-between px-2">
+        <h3 class="text-lg font-semibold text-muted">
+          Menampilkan <span id="search-count" class="text-main font-bold">0</span> hasil
+        </h3>
+        <button onclick="resetFilters()" class="text-xs font-semibold text-indigo-500 hover:text-indigo-400 flex items-center gap-1">
+          <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Filter
+        </button>
+      </div>
 
-            <!-- AUTH HEADER -->
-            <div class="text-center space-y-1">
-                <h3 id="authModalTitle" class="text-2xl font-extrabold text-white">Masuk ke CineFlash</h3>
-                <p class="text-xs text-slate-400">Nikmati sinkronisasi Watchlist & Chat Real-Time</p>
-            </div>
+      <!-- Search Grid Results -->
+      <div id="search-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <!-- Dynamic populated cards -->
+      </div>
 
-            <!-- AUTH TABS -->
-            <div class="flex rounded-2xl bg-slate-950/60 p-1 border border-white/10">
-                <button id="tabSignInBtn" onclick="switchAuthMode('signin')" class="flex-1 py-2 text-xs font-bold rounded-xl text-white bg-indigo-600 transition-all">Masuk</button>
-                <button id="tabSignUpBtn" onclick="switchAuthMode('signup')" class="flex-1 py-2 text-xs font-semibold rounded-xl text-slate-400 hover:text-white transition-all">Daftar</button>
-            </div>
-
-            <!-- AUTH FORM -->
-            <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Email</label>
-                    <input type="email" id="authEmail" required placeholder="nama@email.com" class="w-full bg-slate-900/80 border border-white/10 rounded-2xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-medium text-slate-300 mb-1">Kata Sandi</label>
-                    <input type="password" id="authPassword" onkeyup="checkPasswordStrength(this.value)" required placeholder="••••••••" class="w-full bg-slate-900/80 border border-white/10 rounded-2xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
-                </div>
-
-                <!-- PASSWORD STRENGTH METER (FOR SIGN UP) -->
-                <div id="passwordStrengthBox" class="space-y-1 hidden">
-                    <div class="flex justify-between text-[10px]">
-                        <span class="text-slate-400">Kekuatan Sandi</span>
-                        <span id="strengthText" class="font-bold text-rose-400">Lemah</span>
-                    </div>
-                    <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
-                        <div id="strengthBar" class="bg-rose-500 h-full w-[25%] transition-all"></div>
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full liquid-glass liquid-interactive py-3 rounded-2xl bg-indigo-600 text-white font-bold text-sm shadow-lg shadow-indigo-600/30">
-                    <span id="authSubmitText">Masuk Akun</span>
-                </button>
-            </form>
-
-            <div class="relative flex py-1 items-center">
-                <div class="flex-grow border-t border-white/10"></div>
-                <span class="flex-shrink mx-4 text-[10px] text-slate-500 uppercase font-semibold">Atau</span>
-                <div class="flex-grow border-t border-white/10"></div>
-            </div>
-
-            <!-- GOOGLE LOGIN -->
-            <button onclick="handleGoogleSignIn()" class="w-full liquid-glass liquid-interactive py-2.5 rounded-2xl bg-white/10 border border-white/15 text-white font-semibold text-xs flex items-center justify-center space-x-2">
-                <i class="fa-brands fa-google text-rose-400"></i>
-                <span>Lanjutkan dengan Google</span>
-            </button>
+      <!-- Empty State -->
+      <div id="search-empty" class="hidden text-center py-16 space-y-4">
+        <div class="w-20 h-20 rounded-full liquid-glass mx-auto flex items-center justify-center text-muted">
+          <i data-lucide="film-off" class="w-10 h-10"></i>
         </div>
-    </div>
+        <h4 class="text-xl font-bold">Film tidak ditemukan</h4>
+        <p class="text-sm text-muted max-w-sm mx-auto">Coba gunakan kata kunci lain atau sesuaikan filter genre dan rating Anda.</p>
+      </div>
 
-    <!-- 4. API KEY & FIREBASE CONFIG MODAL -->
-    <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl">
-        <div class="relative w-full max-w-lg liquid-glass rounded-3xl p-6 sm:p-8 space-y-6 border border-white/20 shadow-2xl">
-            <button onclick="closeSettingsModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full liquid-glass flex items-center justify-center text-slate-300 hover:text-white">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+    </section>
 
-            <div class="space-y-1">
-                <h3 class="text-xl font-bold text-white">Pengaturan API TMDB & Firebase</h3>
-                <p class="text-xs text-slate-400">Aplikasi menggunakan data dummy jika API Key tidak diisi.</p>
-            </div>
-
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-cyan-300 mb-1">TMDB API Key (v3 API Read Access Key)</label>
-                    <input type="text" id="tmdbApiKeyInput" placeholder="Masukkan API Key TMDB..." class="w-full bg-slate-900/80 border border-white/10 rounded-2xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
-                </div>
-
-                <button onclick="saveApiKeySettings()" class="w-full liquid-glass liquid-interactive py-2.5 rounded-2xl bg-cyan-500 text-slate-950 font-bold text-xs shadow-lg shadow-cyan-500/30">
-                    Simpan Pengaturan Key
-                </button>
-            </div>
+    <!-- VIEW 3: WATCHLIST -->
+    <section id="view-watchlist" class="hidden space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-black/10 dark:border-white/10 pb-6">
+        <div>
+          <h1 class="text-3xl font-extrabold tracking-tight">Bookmark & Watchlist</h1>
+          <p class="text-sm text-muted">Koleksi film dan serial TV yang Anda simpan untuk ditonton nanti.</p>
         </div>
+        <div class="flex items-center gap-2">
+          <button onclick="clearAllWatchlist()" class="liquid-glass px-4 py-2 rounded-xl text-xs font-semibold text-rose-500 hover:bg-rose-500/10 spring-btn flex items-center gap-1.5">
+            <i data-lucide="trash-2" class="w-4 h-4"></i> Hapus Semua
+          </button>
+        </div>
+      </div>
+
+      <!-- Watchlist Grid -->
+      <div id="watchlist-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <!-- Dynamic populated watchlist -->
+      </div>
+
+      <!-- Watchlist Empty State -->
+      <div id="watchlist-empty" class="hidden text-center py-20 space-y-4">
+        <div class="w-24 h-24 rounded-full liquid-glass mx-auto flex items-center justify-center text-indigo-500 shadow-xl">
+          <i data-lucide="bookmark-check" class="w-12 h-12"></i>
+        </div>
+        <h3 class="text-2xl font-bold">Watchlist Anda Masih Kosong</h3>
+        <p class="text-sm text-muted max-w-md mx-auto">Klik ikon penanda "+ Watchlist" pada film atau serial TV mana pun untuk menyimpannya di sini.</p>
+        <button onclick="switchTab('home')" class="px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm spring-btn shadow-lg shadow-indigo-500/30 inline-flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-4 h-4"></i> Jelajahi Film Sekarang
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DETAIL MODAL OVERLAY (LIQUID GLASS POPUP) -->
+  <div id="detail-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-xl bg-black/60 transition-all duration-300">
+    
+    <!-- Modal Container -->
+    <div class="liquid-glass rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl border border-white/20 relative my-auto">
+      
+      <!-- Close Button -->
+      <button onclick="closeDetailModal()" class="absolute top-4 right-4 z-20 p-3 rounded-full bg-black/40 text-white hover:bg-black/70 spring-btn backdrop-blur-md">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Modal Backdrop Banner -->
+      <div class="relative h-64 sm:h-80 w-full overflow-hidden">
+        <img id="modal-backdrop" src="" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-[var(--bg-base)]/40 to-transparent"></div>
+      </div>
+
+      <!-- Modal Body Content -->
+      <div class="px-6 sm:px-10 pb-10 -mt-24 relative z-10 space-y-8">
+        
+        <!-- Header Info Row -->
+        <div class="flex flex-col sm:flex-row gap-6 items-start">
+          <!-- Poster Image (Sharp Solid) -->
+          <img id="modal-poster" src="" alt="" class="w-36 sm:w-48 rounded-2xl shadow-2xl border-2 border-white/20 flex-shrink-0 object-cover">
+          
+          <div class="space-y-3 pt-2 sm:pt-14 flex-grow">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="modal-type" class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-indigo-500 text-white shadow-md"></span>
+              <span id="modal-year" class="px-3 py-1 rounded-full text-xs font-semibold bg-black/10 dark:bg-white/10"></span>
+              <span id="modal-duration" class="px-3 py-1 rounded-full text-xs font-semibold bg-black/10 dark:bg-white/10"></span>
+            </div>
+
+            <h2 id="modal-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight"></h2>
+
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-1 text-amber-400 font-extrabold text-lg">
+                <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i>
+                <span id="modal-rating"></span>
+              </div>
+              <span class="text-muted text-sm">•</span>
+              <span id="modal-director" class="text-sm text-muted font-medium"></span>
+            </div>
+
+            <div id="modal-genres" class="flex flex-wrap gap-2 pt-1">
+              <!-- Genre Chips -->
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center gap-3 pt-3">
+              <button id="modal-trailer-btn" onclick="openTrailerModal()" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 text-white font-bold text-sm shadow-lg shadow-indigo-500/30 flex items-center gap-2 spring-btn">
+                <i data-lucide="play" class="w-4 h-4 fill-white"></i> Tonton Trailer
+              </button>
+              <button id="modal-watchlist-btn" onclick="toggleModalWatchlist()" class="liquid-glass px-5 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 spring-btn">
+                <i data-lucide="bookmark" class="w-4 h-4"></i> <span>+ Watchlist</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="space-y-2">
+          <h3 class="text-lg font-bold tracking-tight">Sinopsis Ringkas</h3>
+          <p id="modal-synopsis" class="text-sm sm:text-base text-muted leading-relaxed"></p>
+        </div>
+
+        <!-- Cast Members -->
+        <div class="space-y-3">
+          <h3 class="text-lg font-bold tracking-tight">Daftar Pemeran Utama</h3>
+          <div id="modal-cast" class="flex flex-wrap gap-2">
+            <!-- Cast pills dynamically inserted -->
+          </div>
+        </div>
+
+        <!-- User Reviews Section -->
+        <div class="space-y-6 pt-4 border-t border-black/10 dark:border-white/10">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold tracking-tight">Ulasan Pengguna</h3>
+            <span id="modal-reviews-count" class="text-xs text-muted font-semibold"></span>
+          </div>
+
+          <!-- Existing Reviews List -->
+          <div id="modal-reviews-list" class="space-y-4">
+            <!-- Dynamic reviews -->
+          </div>
+
+          <!-- Add Review Interactive Form -->
+          <form onsubmit="submitUserReview(event)" class="liquid-glass rounded-2xl p-5 space-y-4">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-muted">Tulis Ulasan Anda</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <input type="text" id="review-author" required placeholder="Nama Anda" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-main focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-muted">Rating:</span>
+                <select id="review-rating" class="px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-main focus:outline-none focus:ring-2 focus:ring-indigo-500 flex-grow">
+                  <option value="10">⭐⭐⭐⭐⭐ (10/10) Luar Biasa</option>
+                  <option value="8">⭐⭐⭐⭐ (8/10) Sangat Bagus</option>
+                  <option value="6">⭐⭐⭐ (6/10) Lumayan</option>
+                  <option value="4">⭐⭐ (4/10) Kurang</option>
+                  <option value="2">⭐ (2/10) Buruk</option>
+                </select>
+              </div>
+            </div>
+
+            <textarea id="review-comment" required rows="3" placeholder="Bagikan pendapat Anda tentang film ini..." class="w-full px-4 py-2.5 rounded-xl bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-main focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+
+            <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md spring-btn">
+              Kirim Ulasan
+            </button>
+          </form>
+
+        </div>
+
+      </div>
     </div>
+  </div>
 
-    <!-- TOAST NOTIFICATION CONTAINER -->
-    <div id="toastContainer" class="fixed top-20 right-4 z-50 space-y-2 pointer-events-none"></div>
+  <!-- TRAILER PLAYER MODAL (EMBEDDED PLACEHOLDER) -->
+  <div id="trailer-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div class="liquid-glass rounded-3xl max-w-3xl w-full p-4 relative space-y-4">
+      <div class="flex items-center justify-between px-2">
+        <h3 id="trailer-title" class="font-bold text-lg text-white">Trailer Resmi</h3>
+        <button onclick="closeTrailerModal()" class="p-2 rounded-full text-white/80 hover:text-white hover:bg-white/10">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="relative w-full pb-[56.25%] rounded-2xl overflow-hidden bg-black shadow-2xl">
+        <iframe id="trailer-iframe" class="absolute inset-0 w-full h-full" src="" title="Trailer Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
 
-    <!-- -------------------------------------------------------------
-       JAVASCRIPT LOGIC & ENGINE
-    ------------------------------------------------------------- -->
-    <script>
-        /* ==========================================================================
-           1. MOCK DATABASE (20 REALISTIC MOVIES WITH TRAILERS, CAST, POSTERS)
-           ========================================================================== */
-        const DUMMY_MOVIES = [
-            {
-                id: 101,
-                title: "Dune: Part Two",
-                year: 2024,
-                rating: 8.8,
-                duration: "2j 46m",
-                genre_ids: [28, 878, 12],
-                genres: ["Aksi", "Sci-Fi", "Petualangan"],
-                poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500",
-                backdrop: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200",
-                overview: "Paul Atreides bersatu kembali dengan Chani dan suku Fremen saat dia melakukan perjalan balas dendam terhadap para konspirator yang menghancurkan keluarganya.",
-                yt_trailer: "Way9Dexny3w",
-                trending: true,
-                top_rated: true
-            },
-            {
-                id: 102,
-                title: "Oppenheimer",
-                year: 2023,
-                rating: 8.9,
-                duration: "3j 00m",
-                genre_ids: [18, 36],
-                genres: ["Drama", "Sejarah"],
-                poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=500",
-                backdrop: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1200",
-                overview: "Kisah ilmuwan Amerika J. Robert Oppenheimer dan perannya dalam pengembangan bom atom selama Perang Dunia II.",
-                yt_trailer: "uYPbbksJxIg",
-                trending: true,
-                top_rated: true
-            },
-            {
-                id: 103,
-                title: "Spider-Man: Across the Spider-Verse",
-                year: 2023,
-                rating: 8.7,
-                duration: "2j 20m",
-                genre_ids: [16, 28, 878],
-                genres: ["Animasi", "Aksi", "Sci-Fi"],
-                poster: "https://images.unsplash.com/photo-1635805737707-575885ab0820?w=500",
-                backdrop: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200",
-                overview: "Miles Morales dilempar melintasi Multiverse, tempat dia bertemu dengan tim Spider-People yang bertugas melindungi keberadaannya.",
-                yt_trailer: "cqGjhVJWtEg",
-                trending: true,
-                top_rated: true
-            },
-            {
-                id: 104,
-                title: "Interstellar",
-                year: 2014,
-                rating: 8.7,
-                duration: "2j 49m",
-                genre_ids: [878, 18, 12],
-                genres: ["Sci-Fi", "Drama", "Petualangan"],
-                poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500",
-                backdrop: "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200",
-                overview: "Sebuah tim penjelajah melakukan perjalanan melalui lubang cacing di ruang angkasa dalam upaya untuk memastikan kelangsungan hidup umat manusia.",
-                yt_trailer: "zSWdZVtXT7E",
-                trending: false,
-                top_rated: true
-            },
-            {
-                id: 105,
-                title: "Cyberpunk: Edgerunners",
-                year: 2022,
-                rating: 8.6,
-                duration: "24m",
-                genre_ids: [16, 878, 28],
-                genres: ["Animasi", "Sci-Fi", "Aksi"],
-                poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=500",
-                backdrop: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200",
-                overview: "Seorang anak jalanan mencoba bertahan hidup di kota masa depan yang terobsesi dengan teknologi dan modifikasi tubuh.",
-                yt_trailer: "JtqIas3bYhg",
-                trending: true,
-                top_rated: false
-            },
-            {
-                id: 106,
-                title: "The Dark Knight",
-                year: 2008,
-                rating: 9.0,
-                duration: "2j 32m",
-                genre_ids: [28, 80, 18],
-                genres: ["Aksi", "Kriminal", "Drama"],
-                poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500",
-                backdrop: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=1200",
-                overview: "Ketika ancaman bernama Joker merajalela di Gotham, Batman harus menerima salah satu tes psikologis terbesar dalam perjuangannya melawan ketidakadilan.",
-                yt_trailer: "EXeTwQWrcwY",
-                trending: false,
-                top_rated: true
-            },
-            {
-                id: 107,
-                title: "Avatar: The Way of Water",
-                year: 2022,
-                rating: 7.7,
-                duration: "3j 12m",
-                genre_ids: [878, 12, 28],
-                genres: ["Sci-Fi", "Petualangan", "Aksi"],
-                poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500",
-                backdrop: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
-                overview: "Jake Sully tinggal bersama keluarga barunya di planet Pandora. Ketika ancaman akrab kembali, Jake harus bekerja sama dengan tentara ras Na'vi.",
-                yt_trailer: "d9MyW72ELq0",
-                trending: true,
-                top_rated: false
-            },
-            {
-                id: 108,
-                title: "Everything Everywhere All at Once",
-                year: 2022,
-                rating: 8.8,
-                duration: "2j 19m",
-                genre_ids: [878, 35, 28],
-                genres: ["Sci-Fi", "Komedi", "Aksi"],
-                poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500",
-                backdrop: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200",
-                overview: "Seorang imigran Tionghoa berpenghasilan menengah tersapu dalam petualangan gila di mana dia harus menyelamatkan dunia dengan menjelajahi alam semesta lain.",
-                yt_trailer: "wxN1T1uxQ2g",
-                trending: true,
-                top_rated: true
-            }
-        ];
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-        /* ==========================================================================
-           2. STATE MANAGEMENT
-           ========================================================================== */
-        let state = {
-            currentTab: 'home',
-            theme: localStorage.getItem('cine_theme') || 'dark',
-            tmdbApiKey: localStorage.getItem('cine_tmdb_key') || '',
-            user: JSON.parse(localStorage.getItem('cine_user')) || {
-                name: "Sinematra User",
-                email: "user@cineflash.app",
-                streakDays: 5,
-                watchlist: [101, 103],
-                favorites: [102, 104],
-                watched: [106]
-            },
-            chatMessages: [
-                { id: 1, user: "Asep Cinema", text: "Siapa yang udah nonton Dune Part 2 di IMAX? visualnya beneran edan!", time: "14:20", avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100" },
-                { id: 2, user: "Sarah Film", text: "Score musik Hans Zimmer selalu dapet banget atmosfirnya 🔥", time: "14:22", avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100" }
-            ],
-            currentHeroId: 101,
-            selectedDetailMovie: null
-        };
+  <!-- FOOTER -->
+  <footer class="liquid-glass border-t border-white/10 mt-auto py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-pink-500">FilmKu</span>
+        <span class="text-xs text-muted">— Desain Liquid Glass Apple oleh Assistant</span>
+      </div>
+      <p class="text-xs text-muted">Data fiktif & sampel untuk demonstrasi portofolio. Siap di-host di GitHub Pages.</p>
+    </div>
+  </footer>
 
-        /* ==========================================================================
-           3. INITIALIZATION & ROUTING
-           ========================================================================== */
-        window.addEventListener('DOMContentLoaded', () => {
-            initTheme();
-            renderHomeCarousels();
-            renderExploreGrid();
-            renderReelsFeed();
-            renderChatFeed();
-            renderUserProfile();
-            setupScrollListener();
-            setupAmbilightCanvas();
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    /* ==========================================
+       1. DATA DUMMY FILM & SERIAL TV (JSON)
+       ========================================== */
+    const MOVIES_DATA = [
+      {
+        id: "dune-2",
+        title: "Dune: Part Two",
+        type: "movie",
+        year: 2024,
+        duration: "2j 46m",
+        rating: 8.9,
+        trending: true,
+        latest: true,
+        topRated: true,
+        genres: ["Sci-Fi", "Petualangan", "Aksi"],
+        director: "Denis Villeneuve",
+        poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=1200&q=80",
+        synopsis: "Paul Atreides bersatu kembali dengan Chani dan suku Fremen saat membalas dendam terhadap para konspirator yang menghancurkan keluarganya. Menghadapi pilihan antara cinta dalam hidupnya dan nasib alam semesta.",
+        cast: ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson", "Javier Bardem", "Austin Butler"],
+        trailerUrl: "https://www.youtube.com/embed/Way9Dexny3w",
+        reviews: [
+          { author: "Rian S.", rating: 10, comment: "Mahakarya sinematografi modern! Visuil dan musiknya luar biasa memukau." },
+          { author: "Nadia K.", rating: 9, comment: "Alur cerita padat dan adegan pertempuran di padang pasir sangat epik." }
+        ]
+      },
+      {
+        id: "cyberpunk-edgerunners",
+        title: "Cyberpunk: Edgerunners",
+        type: "tv",
+        year: 2022,
+        duration: "1 Season (10 Eps)",
+        rating: 8.8,
+        trending: true,
+        latest: false,
+        topRated: true,
+        series: true,
+        genres: ["Animasi", "Sci-Fi", "Aksi"],
+        director: "Hiroyuki Imaishi",
+        poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80",
+        synopsis: "Seorang anak jalanan yang mencoba bertahan hidup di kota masa depan yang terobsesi dengan teknologi dan modifikasi tubuh. Kehilangan segalanya, ia memilih tetap hidup menjadi seorang edgerunner.",
+        cast: ["KENN", "Aoi Yuki", "Hiroki Touchi", "Michiko Kaiden"],
+        trailerUrl: "https://www.youtube.com/embed/JtqIas3bYhg",
+        reviews: [
+          { author: "Budi P.", rating: 10, comment: "Akhir cerita yang sangat emosional. Animasi Studio Trigger sempurna!" }
+        ]
+      },
+      {
+        id: "oppenheimer",
+        title: "Oppenheimer",
+        type: "movie",
+        year: 2023,
+        duration: "3j 00m",
+        rating: 8.9,
+        trending: false,
+        latest: false,
+        topRated: true,
+        genres: ["Drama", "Sejarah"],
+        director: "Christopher Nolan",
+        poster: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80",
+        synopsis: "Kisah fisikawan Amerika J. Robert Oppenheimer dan perannya dalam merancang Proyek Manhattan yang melahirkan bom atom pertama di dunia.",
+        cast: ["Cillian Murphy", "Emily Blunt", "Matt Damon", "Robert Downey Jr."],
+        trailerUrl: "https://www.youtube.com/embed/uYPbbksJxIg",
+        reviews: [
+          { author: "Fajar H.", rating: 9, comment: "Akting Cillian Murphy layak diganjar Oscar. Desain tata suara yang sangat intens." }
+        ]
+      },
+      {
+        id: "interstellar",
+        title: "Interstellar",
+        type: "movie",
+        year: 2014,
+        duration: "2j 49m",
+        rating: 8.7,
+        trending: true,
+        latest: false,
+        topRated: true,
+        genres: ["Sci-Fi", "Drama", "Petualangan"],
+        director: "Christopher Nolan",
+        poster: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=1200&q=80",
+        synopsis: "Ketika Bumi menjadi semakin tidak dapat dihuni, sekelompok penjelajah menggunakan lubang cacing di luar angkasa untuk mencari planet baru yang berpotensi mendukung kehidupan manusia.",
+        cast: ["Matthew McConaughey", "Anne Hathaway", "Jessica Chastain", "Michael Caine"],
+        trailerUrl: "https://www.youtube.com/embed/zSWdZVtXT7E",
+        reviews: [
+          { author: "Dewi A.", rating: 10, comment: "Musik Hans Zimmer membuat adegan melintasi wormhole terasa sangat megah." }
+        ]
+      },
+      {
+        id: "arcane",
+        title: "Arcane: League of Legends",
+        type: "tv",
+        year: 2024,
+        duration: "2 Seasons",
+        rating: 9.0,
+        trending: true,
+        latest: true,
+        topRated: true,
+        series: true,
+        genres: ["Animasi", "Aksi", "Sci-Fi"],
+        director: "Pascal Charrue",
+        poster: "https://images.unsplash.com/photo-1563089145-599997674d42?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=80",
+        synopsis: "Di tengah perselisihan antara kota kaya Piltover dan kota bawah tanah Zaun yang kelam, dua saudara perempuan bertarung di sisi berlawanan dari perang teknologi sihir.",
+        cast: ["Hailee Steinfeld", "Ella Purnell", "Kevin Alejandro", "Katie Leung"],
+        trailerUrl: "https://www.youtube.com/embed/fXmAurh076U",
+        reviews: [
+          { author: "Dimas W.", rating: 10, comment: "Kualitas animasi terbaik yang pernah dibuat dalam sejarah seri TV!" }
+        ]
+      },
+      {
+        id: "the-batman",
+        title: "The Batman",
+        type: "movie",
+        year: 2022,
+        duration: "2j 56m",
+        rating: 8.1,
+        trending: false,
+        latest: false,
+        topRated: false,
+        genres: ["Aksi", "Drama", "Kejahatan"],
+        director: "Matt Reeves",
+        poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1514539079130-25950c84af65?w=1200&q=80",
+        synopsis: "Ketika seorang pembunuh berantai misterius menyerang elit politik Gotham, Batman dipaksa untuk menyelidiki korupsi tersembunyi di kota tersebut.",
+        cast: ["Robert Pattinson", "Zoë Kravitz", "Paul Dano", "Colin Farrell"],
+        trailerUrl: "https://www.youtube.com/embed/mqqft2x_Aa4",
+        reviews: [
+          { author: "Seno R.", rating: 8, comment: "Pendekatan detektif yang sangat gelap dan realistis." }
+        ]
+      },
+      {
+        id: "shogun",
+        title: "Shōgun",
+        type: "tv",
+        year: 2024,
+        duration: "1 Season (10 Eps)",
+        rating: 8.7,
+        trending: true,
+        latest: true,
+        topRated: true,
+        series: true,
+        genres: ["Drama", "Sejarah", "Petualangan"],
+        director: "Jonathan van Tulleken",
+        poster: "https://images.unsplash.com/photo-1528164344705-47542687990d?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80",
+        synopsis: "Di Jepang abad ke-17, Lord Yoshii Toranaga berjuang demi kelangsungan hidupnya ketika musuh-musuhnya di Dewan Wali Kota bersatu melawannya.",
+        cast: ["Hiroyuki Sanada", "Cosmo Jarvis", "Anna Sawai", "Tadanobu Asano"],
+        trailerUrl: "https://www.youtube.com/embed/yAN5uspO_hk",
+        reviews: [
+          { author: "Hendra T.", rating: 9, comment: "Sinematografi budaya feodal Jepang yang sangat mendalam." }
+        ]
+      },
+      {
+        id: "spider-verse",
+        title: "Spider-Man: Across the Spider-Verse",
+        type: "movie",
+        year: 2023,
+        duration: "2j 20m",
+        rating: 8.7,
+        trending: false,
+        latest: false,
+        topRated: true,
+        genres: ["Animasi", "Aksi", "Sci-Fi"],
+        director: "Joaquim Dos Santos",
+        poster: "https://images.unsplash.com/photo-1635863138275-d9b33299680b?w=600&q=80",
+        backdrop: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=1200&q=80",
+        synopsis: "Miles Morales terlempar melintasi Multiverse, di mana ia bertemu dengan tim Spider-People yang bertugas melindungi keberadaannya.",
+        cast: ["Shameik Moore", "Hailee Steinfeld", "Oscar Isaac", "Jake Johnson"],
+        trailerUrl: "https://www.youtube.com/embed/cqGjhVJWtEg",
+        reviews: [
+          { author: "Sari M.", rating: 10, comment: "Visual bergaya komik yang luar biasa kreatif!" }
+        ]
+      }
+    ];
+
+    /* ==========================================
+       2. STATE MANAGEMENT & LOCAL STORAGE
+       ========================================== */
+    let activeTab = 'home';
+    let currentTheme = localStorage.getItem('filmku_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    let watchlist = JSON.parse(localStorage.getItem('filmku_watchlist') || '[]');
+    let activeMovieDetail = null;
+
+    /* ==========================================
+       3. INITIALIZATION ON DOM LOAD
+       ========================================== */
+    window.addEventListener('DOMContentLoaded', () => {
+      applyTheme(currentTheme);
+      renderCarousels();
+      renderSearchGrid(MOVIES_DATA);
+      updateWatchlistBadge();
+      setupSpotlightCursor();
+      setHeroMovie(MOVIES_DATA[0]);
+      
+      // Initialize Lucide icons
+      if (window.lucide) lucide.createIcons();
+    });
+
+    /* ==========================================
+       4. THEME TOGGLE (LIGHT / DARK)
+       ========================================== */
+    function toggleTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('filmku_theme', currentTheme);
+      applyTheme(currentTheme);
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    /* ==========================================
+       5. NAVIGATION & TAB SWITCHING
+       ========================================== */
+    function switchTab(tabId) {
+      activeTab = tabId;
+      
+      // Hide all views
+      ['home', 'search', 'watchlist'].forEach(id => {
+        document.getElementById(`view-${id}`).classList.add('hidden');
+      });
+
+      // Show target view
+      document.getElementById(`view-${tabId}`).classList.remove('hidden');
+
+      // Update Nav Button Styles
+      document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-md');
+        btn.classList.add('text-muted');
+      });
+
+      const activeNavBtn = document.getElementById(`nav-${tabId}`);
+      if (activeNavBtn) {
+        activeNavBtn.classList.remove('text-muted');
+        activeNavBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-md');
+      }
+
+      if (tabId === 'watchlist') {
+        renderWatchlistGrid();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+    }
+
+    /* ==========================================
+       6. RENDER CAROUSELS & HERO
+       ========================================== */
+    function setHeroMovie(movie) {
+      document.getElementById('hero-bg').src = movie.backdrop;
+      document.getElementById('hero-title').textContent = movie.title;
+      document.getElementById('hero-synopsis').textContent = movie.synopsis;
+      document.getElementById('hero-rating').textContent = movie.rating;
+      document.getElementById('hero-year').textContent = movie.year;
+      document.getElementById('hero-type').textContent = movie.type === 'movie' ? 'Film' : 'Serial TV';
+
+      const heroDetailBtn = document.getElementById('hero-detail-btn');
+      heroDetailBtn.onclick = () => openDetailModal(movie.id);
+
+      const heroWatchlistBtn = document.getElementById('hero-watchlist-btn');
+      heroWatchlistBtn.onclick = () => toggleWatchlist(movie.id);
+    }
+
+    function createMovieCard(item) {
+      const isSaved = watchlist.includes(item.id);
+      return `
+        <div onclick="openDetailModal('${item.id}')" class="liquid-glass liquid-glass-interactive spotlight-card rounded-2xl flex-shrink-0 w-44 sm:w-52 p-3 cursor-pointer group flex flex-col justify-between">
+          <div class="relative rounded-xl overflow-hidden mb-3 aspect-[2/3] shadow-md">
+            <img src="${item.poster}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x600/1e293b/ffffff?text=${encodeURIComponent(item.title)}'">
+            
+            <div class="absolute top-2 right-2 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full text-xs font-bold text-amber-400 border border-white/10">
+              <i data-lucide="star" class="w-3 h-3 fill-amber-400"></i>
+              ${item.rating}
+            </div>
+
+            <button onclick="event.stopPropagation(); toggleWatchlist('${item.id}');" class="absolute bottom-2 right-2 p-2 rounded-full ${isSaved ? 'bg-indigo-600 text-white' : 'bg-black/50 text-white/80'} hover:scale-110 spring-btn backdrop-blur-md">
+              <i data-lucide="${isSaved ? 'bookmark-check' : 'bookmark-plus'}" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                ${item.type === 'movie' ? 'Film' : 'TV'}
+              </span>
+              <span class="text-xs text-muted font-medium">${item.year}</span>
+            </div>
+            <h3 class="font-bold text-sm text-main line-clamp-1 group-hover:text-indigo-400 transition-colors">${item.title}</h3>
+            <p class="text-xs text-muted line-clamp-1 mt-0.5">${item.genres.join(', ')}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCarousels() {
+      const trending = MOVIES_DATA.filter(m => m.trending);
+      const latest = MOVIES_DATA.filter(m => m.latest || m.year >= 2023);
+      const topRated = MOVIES_DATA.filter(m => m.rating >= 8.7);
+      const series = MOVIES_DATA.filter(m => m.type === 'tv');
+
+      document.getElementById('carousel-trending').innerHTML = trending.map(createMovieCard).join('');
+      document.getElementById('carousel-latest').innerHTML = latest.map(createMovieCard).join('');
+      document.getElementById('carousel-top').innerHTML = topRated.map(createMovieCard).join('');
+      document.getElementById('carousel-series').innerHTML = series.map(createMovieCard).join('');
+    }
+
+    function scrollCarousel(id, amount) {
+      document.getElementById(id).scrollBy({ left: amount, behavior: 'smooth' });
+    }
+
+    /* ==========================================
+       7. LIVE SEARCH & FILTERING LOGIC
+       ========================================== */
+    function applyFilters() {
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
+      const type = document.getElementById('filter-type').value;
+      const genre = document.getElementById('filter-genre').value;
+      const minRating = parseFloat(document.getElementById('filter-rating').value);
+      const sortBy = document.getElementById('filter-sort').value;
+
+      document.getElementById('clear-search-btn').classList.toggle('hidden', query === '');
+
+      let filtered = MOVIES_DATA.filter(item => {
+        // Query match
+        const matchesQuery = query === '' || 
+          item.title.toLowerCase().includes(query) ||
+          item.director.toLowerCase().includes(query) ||
+          item.cast.some(c => c.toLowerCase().includes(query)) ||
+          item.genres.some(g => g.toLowerCase().includes(query));
+
+        // Type match
+        const matchesType = type === 'all' || item.type === type;
+
+        // Genre match
+        const matchesGenre = genre === 'all' || item.genres.includes(genre);
+
+        // Rating match
+        const matchesRating = item.rating >= minRating;
+
+        return matchesQuery && matchesType && matchesGenre && matchesRating;
+      });
+
+      // Sorting
+      filtered.sort((a, b) => {
+        if (sortBy === 'rating-desc') return b.rating - a.rating;
+        if (sortBy === 'year-desc') return b.year - a.year;
+        if (sortBy === 'year-asc') return a.year - b.year;
+        if (sortBy === 'title-asc') return a.title.localeCompare(b.title);
+        return 0;
+      });
+
+      renderSearchGrid(filtered);
+    }
+
+    function renderSearchGrid(data) {
+      const grid = document.getElementById('search-grid');
+      const emptyState = document.getElementById('search-empty');
+      document.getElementById('search-count').textContent = data.length;
+
+      if (data.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        grid.innerHTML = data.map(item => `
+          <div onclick="openDetailModal('${item.id}')" class="liquid-glass liquid-glass-interactive spotlight-card rounded-2xl p-3 cursor-pointer group flex flex-col justify-between">
+            <div class="relative rounded-xl overflow-hidden mb-3 aspect-[2/3] shadow-md">
+              <img src="${item.poster}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute top-2 right-2 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-1 rounded-full text-xs font-bold text-amber-400 border border-white/10">
+                <i data-lucide="star" class="w-3 h-3 fill-amber-400"></i>
+                ${item.rating}
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                  ${item.type === 'movie' ? 'Film' : 'TV'}
+                </span>
+                <span class="text-xs text-muted">${item.year}</span>
+              </div>
+              <h3 class="font-bold text-sm text-main line-clamp-1 group-hover:text-indigo-400 transition-colors">${item.title}</h3>
+              <p class="text-xs text-muted line-clamp-1 mt-0.5">${item.genres.join(', ')}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function clearSearch() {
+      document.getElementById('search-input').value = '';
+      applyFilters();
+    }
+
+    function resetFilters() {
+      document.getElementById('search-input').value = '';
+      document.getElementById('filter-type').value = 'all';
+      document.getElementById('filter-genre').value = 'all';
+      document.getElementById('filter-rating').value = '0';
+      document.getElementById('filter-sort').value = 'rating-desc';
+      applyFilters();
+    }
+
+    /* ==========================================
+       8. DETAIL MODAL LOGIC & REVIEWS
+       ========================================== */
+    function openDetailModal(id) {
+      const item = MOVIES_DATA.find(m => m.id === id);
+      if (!item) return;
+
+      activeMovieDetail = item;
+
+      document.getElementById('modal-backdrop').src = item.backdrop;
+      document.getElementById('modal-poster').src = item.poster;
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-type').textContent = item.type === 'movie' ? 'Film' : 'Serial TV';
+      document.getElementById('modal-year').textContent = item.year;
+      document.getElementById('modal-duration').textContent = item.duration;
+      document.getElementById('modal-rating').textContent = item.rating;
+      document.getElementById('modal-director').textContent = `Sutradara: ${item.director}`;
+      document.getElementById('modal-synopsis').textContent = item.synopsis;
+
+      // Genres
+      document.getElementById('modal-genres').innerHTML = item.genres.map(g => `
+        <span class="px-3 py-1 rounded-full text-xs font-medium liquid-glass border border-white/20">${g}</span>
+      `).join('');
+
+      // Cast
+      document.getElementById('modal-cast').innerHTML = item.cast.map(c => `
+        <span class="px-3 py-1.5 rounded-full text-xs font-semibold bg-black/10 dark:bg-white/10 text-main flex items-center gap-1.5">
+          <i data-lucide="user" class="w-3.5 h-3.5 text-indigo-400"></i> ${c}
+        </span>
+      `).join('');
+
+      // Reviews
+      renderModalReviews(item);
+
+      // Watchlist Button State
+      updateModalWatchlistBtn(item.id);
+
+      // Show Modal
+      const modal = document.getElementById('detail-modal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeDetailModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    function renderModalReviews(item) {
+      document.getElementById('modal-reviews-count').textContent = `${item.reviews.length} Ulasan`;
+      const reviewsList = document.getElementById('modal-reviews-list');
+
+      if (item.reviews.length === 0) {
+        reviewsList.innerHTML = `<p class="text-sm text-muted italic">Belum ada ulasan untuk judul ini. Jadilah yang pertama memberikan ulasan!</p>`;
+      } else {
+        reviewsList.innerHTML = item.reviews.map(r => `
+          <div class="liquid-glass rounded-2xl p-4 space-y-2 border border-white/10">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-sm text-main">${r.author}</span>
+              <div class="flex items-center gap-1 text-amber-400 text-xs font-bold bg-amber-400/10 px-2 py-0.5 rounded-full">
+                <i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> ${r.rating}/10
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-muted">${r.comment}</p>
+          </div>
+        `).join('');
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function submitUserReview(e) {
+      e.preventDefault();
+      if (!activeMovieDetail) return;
+
+      const author = document.getElementById('review-author').value;
+      const rating = parseInt(document.getElementById('review-rating').value);
+      const comment = document.getElementById('review-comment').value;
+
+      activeMovieDetail.reviews.unshift({ author, rating, comment });
+      renderModalReviews(activeMovieDetail);
+
+      // Reset Form
+      e.target.reset();
+      showToast('Ulasan Anda berhasil ditambahkan!');
+    }
+
+    function updateModalWatchlistBtn(id) {
+      const isSaved = watchlist.includes(id);
+      const btn = document.getElementById('modal-watchlist-btn');
+      btn.innerHTML = `
+        <i data-lucide="${isSaved ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4"></i>
+        <span>${isSaved ? 'Tersimpan di Watchlist' : '+ Watchlist'}</span>
+      `;
+      btn.className = `liquid-glass px-5 py-2.5 rounded-full font-semibold text-sm flex items-center gap-2 spring-btn ${isSaved ? 'bg-indigo-600 text-white' : ''}`;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleModalWatchlist() {
+      if (!activeMovieDetail) return;
+      toggleWatchlist(activeMovieDetail.id);
+      updateModalWatchlistBtn(activeMovieDetail.id);
+    }
+
+    /* ==========================================
+       9. TRAILER EMBED MODAL
+       ========================================== */
+    function openTrailerModal() {
+      if (!activeMovieDetail) return;
+      document.getElementById('trailer-title').textContent = `Trailer: ${activeMovieDetail.title}`;
+      document.getElementById('trailer-iframe').src = activeMovieDetail.trailerUrl;
+      document.getElementById('trailer-modal').classList.remove('hidden');
+    }
+
+    function closeTrailerModal() {
+      document.getElementById('trailer-modal').classList.add('hidden');
+      document.getElementById('trailer-iframe').src = '';
+    }
+
+    /* ==========================================
+       10. WATCHLIST & LOCALSTORAGE MANAGEMENT
+       ========================================== */
+    function toggleWatchlist(id) {
+      const index = watchlist.indexOf(id);
+      const movie = MOVIES_DATA.find(m => m.id === id);
+      
+      if (index > -1) {
+        watchlist.splice(index, 1);
+        showToast(`"${movie.title}" dihapus dari Watchlist`);
+      } else {
+        watchlist.push(id);
+        showToast(`"${movie.title}" ditambahkan ke Watchlist`);
+      }
+
+      localStorage.setItem('filmku_watchlist', JSON.stringify(watchlist));
+      updateWatchlistBadge();
+      renderCarousels();
+
+      if (activeTab === 'search') applyFilters();
+      if (activeTab === 'watchlist') renderWatchlistGrid();
+    }
+
+    function updateWatchlistBadge() {
+      document.getElementById('watchlist-badge').textContent = watchlist.length;
+      document.getElementById('mobile-watchlist-badge').textContent = watchlist.length;
+    }
+
+    function renderWatchlistGrid() {
+      const grid = document.getElementById('watchlist-grid');
+      const emptyState = document.getElementById('watchlist-empty');
+
+      const savedMovies = MOVIES_DATA.filter(m => watchlist.includes(m.id));
+
+      if (savedMovies.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        grid.innerHTML = savedMovies.map(createMovieCard).join('');
+      }
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function clearAllWatchlist() {
+      if (watchlist.length === 0) return;
+      watchlist = [];
+      localStorage.setItem('filmku_watchlist', JSON.stringify(watchlist));
+      updateWatchlistBadge();
+      renderWatchlistGrid();
+      showToast('Seluruh Watchlist telah dibersihkan');
+    }
+
+    /* ==========================================
+       11. SPOTLIGHT CURSOR LIGHT REFRACTION EFFECT
+       ========================================== */
+    function setupSpotlightCursor() {
+      document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.spotlight-card');
+        cards.forEach(card => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
         });
-
-        // Theme Switcher
-        function initTheme() {
-            if (state.theme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.getElementById('themeIcon').className = "fa-solid fa-sun text-amber-300";
-            } else {
-                document.documentElement.classList.remove('dark');
-                document.getElementById('themeIcon').className = "fa-solid fa-moon text-indigo-400";
-            }
-        }
-
-        function toggleTheme() {
-            state.theme = state.theme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('cine_theme', state.theme);
-            initTheme();
-            showToast(`Mode ${state.theme === 'dark' ? 'Gelap' : 'Terang'} diaktifkan`);
-        }
-
-        // Bottom Navigation & Tab Switching Logic
-        function switchTab(tabId) {
-            state.currentTab = tabId;
-
-            // Hide all tab views
-            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
-            const targetView = document.getElementById(`view-${tabId}`);
-            if (targetView) targetView.classList.remove('hidden');
-
-            // Animate Tab Indicator Bubble (Liquid Physics Slide)
-            const navButtons = document.querySelectorAll('.nav-tab-btn');
-            const indicator = document.getElementById('tabIndicator');
-            
-            const indexMap = { 'home': 0, 'explore': 1, 'reels': 2, 'chat': 3, 'profile': 4 };
-            const idx = indexMap[tabId] || 0;
-            
-            indicator.style.transform = `translateX(${idx * 72}px)`;
-
-            // Update text styles
-            navButtons.forEach((btn, i) => {
-                if (i === idx) {
-                    btn.classList.add('text-white');
-                    btn.classList.remove('text-slate-400');
-                } else {
-                    btn.classList.remove('text-white');
-                    btn.classList.add('text-slate-400');
-                }
-            });
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Hide/Show Header and Floating Bar on Scroll
-        let lastScrollY = window.scrollY;
-        function setupScrollListener() {
-            window.addEventListener('scroll', () => {
-                const nav = document.getElementById('bottomNav');
-                const header = document.getElementById('mainHeader');
-                if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                    nav.style.transform = 'translate(-50%, 120%)';
-                    header.style.transform = 'translateY(-120%)';
-                } else {
-                    nav.style.transform = 'translate(-50%, 0)';
-                    header.style.transform = 'translateY(0)';
-                }
-                lastScrollY = window.scrollY;
-            });
-        }
-
-        /* ==========================================================================
-           4. HOME & EXPLORE RENDER ENGINES
-           ========================================================================== */
-        function renderHomeCarousels() {
-            // Render Hero Banner
-            const hero = DUMMY_MOVIES[0];
-            state.currentHeroId = hero.id;
-            document.getElementById('heroImage').src = hero.backdrop;
-            document.getElementById('heroTitle').innerText = hero.title;
-            document.getElementById('heroOverview').innerText = hero.overview;
-            document.getElementById('heroRating').innerHTML = `<i class="fa-solid fa-star text-amber-400 mr-1"></i> ${hero.rating}`;
-            document.getElementById('heroYear').innerText = hero.year;
-            document.getElementById('heroSkeleton').classList.add('hidden');
-
-            // Render Trending Carousel
-            const trendingContainer = document.getElementById('carouselTrending');
-            trendingContainer.innerHTML = DUMMY_MOVIES.filter(m => m.trending).map(movie => createMovieCardHTML(movie)).join('');
-
-            // Render Top Rated Carousel
-            const topRatedContainer = document.getElementById('carouselTopRated');
-            topRatedContainer.innerHTML = DUMMY_MOVIES.filter(m => m.top_rated).map(movie => createMovieCardHTML(movie)).join('');
-        }
-
-        function createMovieCardHTML(movie) {
-            return `
-                <div class="flex-shrink-0 w-40 sm:w-48 liquid-glass liquid-interactive rounded-2xl overflow-hidden group shadow-lg" onclick="showMovieDetails(${movie.id})">
-                    <div class="relative aspect-[2/3] w-full overflow-hidden">
-                        <img src="${movie.poster}" alt="${movie.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
-                            <button onclick="event.stopPropagation(); playCanvasTrailer('${movie.yt_trailer}', '${movie.title}')" class="w-full py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-lg flex items-center justify-center space-x-1">
-                                <i class="fa-solid fa-play text-[10px]"></i>
-                                <span>Trailer</span>
-                            </button>
-                        </div>
-                        <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-950/70 text-amber-300 backdrop-blur-md border border-white/10">
-                            ⭐ ${movie.rating}
-                        </span>
-                    </div>
-                    <div class="p-3 space-y-1">
-                        <h4 class="font-bold text-xs text-white truncate">${movie.title}</h4>
-                        <div class="flex justify-between items-center text-[10px] text-slate-400">
-                            <span>${movie.year}</span>
-                            <span>${movie.genres[0] || 'Film'}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function filterHomeGenre(genreId, btnElement) {
-            document.querySelectorAll('.genre-pill').forEach(el => {
-                el.classList.remove('bg-indigo-600/50', 'text-white', 'border-indigo-400/50');
-                el.classList.add('text-slate-300');
-            });
-            btnElement.classList.add('bg-indigo-600/50', 'text-white', 'border-indigo-400/50');
-
-            if (genreId === 0) {
-                renderHomeCarousels();
-            } else {
-                const filtered = DUMMY_MOVIES.filter(m => m.genre_ids.includes(genreId));
-                document.getElementById('carouselTrending').innerHTML = filtered.map(movie => createMovieCardHTML(movie)).join('');
-            }
-        }
-
-        function renderExploreGrid() {
-            const grid = document.getElementById('exploreGrid');
-            grid.innerHTML = DUMMY_MOVIES.map(movie => createMovieCardHTML(movie)).join('');
-        }
-
-        function handleExploreSearch() {
-            const query = document.getElementById('exploreSearchInput').value.toLowerCase();
-            const filtered = DUMMY_MOVIES.filter(m => m.title.toLowerCase().includes(query) || m.overview.toLowerCase().includes(query));
-            document.getElementById('exploreGrid').innerHTML = filtered.map(movie => createMovieCardHTML(movie)).join('');
-        }
-
-        function applyExploreFilters() {
-            const genre = document.getElementById('filterGenre').value;
-            const minRating = parseFloat(document.getElementById('filterRating').value);
-
-            let filtered = DUMMY_MOVIES.filter(m => {
-                const matchGenre = genre === 'all' || m.genre_ids.includes(parseInt(genre));
-                const matchRating = m.rating >= minRating;
-                return matchGenre && matchRating;
-            });
-
-            document.getElementById('exploreGrid').innerHTML = filtered.map(movie => createMovieCardHTML(movie)).join('');
-        }
-
-        /* ==========================================================================
-           5. CANVAS TRAILER & AMBILIGHT ENGINE
-           ========================================================================== */
-        let ambilightCtx = null;
-        let ambilightAnimId = null;
-
-        function setupAmbilightCanvas() {
-            const canvas = document.getElementById('ambilightCanvas');
-            ambilightCtx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        function playCanvasTrailer(ytId, title) {
-            document.getElementById('modalTrailerTitle').innerText = title || "Canvas Trailer";
-            document.getElementById('trailerIframe').src = `https://www.youtube.com/embed/${ytId}?autoplay=1&enablejsapi=1`;
-            document.getElementById('canvasTrailerModal').classList.remove('hidden');
-
-            startAmbilightAnimation();
-        }
-
-        function playTrailerCurrentHero() {
-            const hero = DUMMY_MOVIES.find(m => m.id === state.currentHeroId);
-            if (hero) playCanvasTrailer(hero.yt_trailer, hero.title);
-        }
-
-        function startAmbilightAnimation() {
-            let hue = 220;
-            function draw() {
-                if (!ambilightCtx) return;
-                const canvas = ambilightCtx.canvas;
-                ambilightCtx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                hue = (hue + 0.5) % 360;
-                const grad = ambilightCtx.createRadialGradient(
-                    canvas.width / 2, canvas.height / 2, 100,
-                    canvas.width / 2, canvas.height / 2, canvas.width / 1.2
-                );
-                grad.addColorStop(0, `hsla(${hue}, 80%, 50%, 0.35)`);
-                grad.addColorStop(0.5, `hsla(${hue + 60}, 70%, 40%, 0.2)`);
-                grad.addColorStop(1, 'rgba(9, 10, 15, 0.95)');
-
-                ambilightCtx.fillStyle = grad;
-                ambilightCtx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ambilightAnimId = requestAnimationFrame(draw);
-            }
-            draw();
-        }
-
-        function closeTrailerModal() {
-            document.getElementById('trailerIframe').src = "";
-            document.getElementById('canvasTrailerModal').classList.add('hidden');
-            if (ambilightAnimId) cancelAnimationFrame(ambilightAnimId);
-        }
-
-        /* ==========================================================================
-           6. MOVIE REELS ENGINE (VERTICAL TIKTOK-STYLE FEED)
-           ========================================================================== */
-        function renderReelsFeed() {
-            const container = document.getElementById('reelsContainer');
-            container.innerHTML = DUMMY_MOVIES.map((movie, index) => `
-                <div class="reel-card relative w-full h-[calc(100vh-140px)] rounded-3xl overflow-hidden liquid-glass border border-white/20">
-                    <iframe class="w-full h-full object-cover" src="https://www.youtube.com/embed/${movie.yt_trailer}?autoplay=0&controls=0&loop=1" title="Reel Trailer"></iframe>
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none"></div>
-
-                    <!-- ACTION BUTTONS SIDEBAR -->
-                    <div class="absolute right-4 bottom-16 space-y-4 flex flex-col items-center z-10">
-                        <button onclick="toggleReelLike(this)" class="w-12 h-12 rounded-full liquid-glass flex flex-col items-center justify-center text-white text-lg">
-                            <i class="fa-solid fa-heart text-rose-400"></i>
-                            <span class="text-[10px] font-bold mt-0.5">14.2k</span>
-                        </button>
-
-                        <button onclick="showToast('Komentar dibuka')" class="w-12 h-12 rounded-full liquid-glass flex flex-col items-center justify-center text-white text-lg">
-                            <i class="fa-solid fa-comment-dots text-cyan-400"></i>
-                            <span class="text-[10px] font-bold mt-0.5">850</span>
-                        </button>
-
-                        <button onclick="showMovieDetails(${movie.id})" class="w-12 h-12 rounded-full liquid-glass flex flex-col items-center justify-center text-white text-lg">
-                            <i class="fa-solid fa-circle-info text-amber-400"></i>
-                            <span class="text-[10px] font-bold mt-0.5">Info</span>
-                        </button>
-                    </div>
-
-                    <!-- REEL METADATA -->
-                    <div class="absolute bottom-6 left-6 right-20 space-y-2 z-10">
-                        <div class="flex items-center space-x-2">
-                            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-600 text-white">Trailer Reel</span>
-                            <h3 class="font-extrabold text-base text-white">${movie.title}</h3>
-                        </div>
-                        <p class="text-xs text-slate-300 line-clamp-2">${movie.overview}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function toggleReelLike(btn) {
-            btn.classList.toggle('scale-125');
-            showToast('Menyukai reel film ini! ❤️');
-        }
-
-        /* ==========================================================================
-           7. CHAT & STREAKS LOGIC
-           ========================================================================== */
-        function renderChatFeed() {
-            const feed = document.getElementById('chatMessagesFeed');
-            feed.innerHTML = state.chatMessages.map(msg => `
-                <div class="flex items-start space-x-3">
-                    <img src="${msg.avatar}" class="w-9 h-9 rounded-2xl object-cover border border-white/20">
-                    <div class="liquid-glass rounded-2xl p-3 max-w-md space-y-1">
-                        <div class="flex items-center justify-between text-[11px] space-x-4">
-                            <span class="font-bold text-cyan-300">${msg.user}</span>
-                            <span class="text-slate-400">${msg.time}</span>
-                        </div>
-                        <p class="text-xs text-slate-200">${msg.text}</p>
-                    </div>
-                </div>
-            `).join('');
-            feed.scrollTop = feed.scrollHeight;
-        }
-
-        function handleSendChatMessage(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const now = new Date();
-            const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-
-            state.chatMessages.push({
-                id: Date.now(),
-                user: state.user.name,
-                text: text,
-                time: timeStr,
-                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200"
-            });
-
-            input.value = '';
-            renderChatFeed();
-
-            // Simulate quick auto reply
-            setTimeout(() => {
-                state.chatMessages.push({
-                    id: Date.now() + 1,
-                    user: "CineBot AI",
-                    text: "Diskusi yang menarik! Jangan lupa check-in Streak harianmu hari ini 🔥",
-                    time: timeStr,
-                    avatar: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100"
-                });
-                renderChatFeed();
-            }, 1200);
-        }
-
-        function claimDailyStreak() {
-            state.user.streakDays += 1;
-            document.getElementById('streakDaysCount').innerText = `${state.user.streakDays} Hari 🔥`;
-            showToast(`Streak Berhasil Dibuat! Hari ke-${state.user.streakDays} 🔥`);
-        }
-
-        /* ==========================================================================
-           8. MOVIE DETAIL MODAL ENGINE
-           ========================================================================== */
-        function showMovieDetails(id) {
-            const movie = DUMMY_MOVIES.find(m => m.id === id) || DUMMY_MOVIES[0];
-            state.selectedDetailMovie = movie;
-
-            document.getElementById('detailTitle').innerText = movie.title;
-            document.getElementById('detailPoster').src = movie.poster;
-            document.getElementById('detailBackdrop').src = movie.backdrop;
-            document.getElementById('detailOverview').innerText = movie.overview;
-            document.getElementById('detailRating').innerText = `⭐ ${movie.rating}`;
-            document.getElementById('detailYear').innerText = movie.year;
-            document.getElementById('detailDuration').innerText = movie.duration;
-
-            document.getElementById('detailGenres').innerHTML = movie.genres.map(g => 
-                `<span class="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-white/10 border border-white/15 text-slate-200">${g}</span>`
-            ).join('');
-
-            document.getElementById('detailTrailerBtn').onclick = () => {
-                closeMovieDetailModal();
-                playCanvasTrailer(movie.yt_trailer, movie.title);
-            };
-
-            document.getElementById('movieDetailModal').classList.remove('hidden');
-        }
-
-        function closeMovieDetailModal() {
-            document.getElementById('movieDetailModal').classList.add('hidden');
-        }
-
-        function rateMovie(stars) {
-            document.getElementById('userGivenRating').innerText = `Rating Anda: ${stars} / 10 ⭐`;
-            showToast(`Terima kasih! Anda memberikan rating ${stars} bintang.`);
-        }
-
-        /* ==========================================================================
-           9. USER PROFILE & USER LISTS
-           ========================================================================== */
-        function renderUserProfile() {
-            document.getElementById('profileName').innerText = state.user.name;
-            document.getElementById('profileEmail').innerText = state.user.email;
-            switchUserList('watchlist');
-        }
-
-        function switchUserList(listType, tabBtn) {
-            if (tabBtn) {
-                document.querySelectorAll('.user-list-tab').forEach(b => {
-                    b.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400');
-                    b.classList.add('text-slate-400');
-                });
-                tabBtn.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400');
-            }
-
-            const ids = state.user[listType] || [];
-            const movies = DUMMY_MOVIES.filter(m => ids.includes(m.id));
-            const grid = document.getElementById('userListGrid');
-
-            if (movies.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-8 text-center text-xs text-slate-400">Daftar ini masih kosong.</div>`;
-            } else {
-                grid.innerHTML = movies.map(movie => createMovieCardHTML(movie)).join('');
-            }
-        }
-
-        /* ==========================================================================
-           10. AUTH & SETTINGS MODAL LOGIC
-           ========================================================================== */
-        let authMode = 'signin';
-
-        function openAuthModal() {
-            document.getElementById('authModal').classList.remove('hidden');
-        }
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-        }
-
-        function switchAuthMode(mode) {
-            authMode = mode;
-            const title = document.getElementById('authModalTitle');
-            const submitText = document.getElementById('authSubmitText');
-            const strengthBox = document.getElementById('passwordStrengthBox');
-
-            if (mode === 'signup') {
-                title.innerText = "Daftar Akun CineFlash";
-                submitText.innerText = "Buat Akun Baru";
-                strengthBox.classList.remove('hidden');
-                document.getElementById('tabSignUpBtn').className = "flex-1 py-2 text-xs font-bold rounded-xl text-white bg-indigo-600 transition-all";
-                document.getElementById('tabSignInBtn').className = "flex-1 py-2 text-xs font-semibold rounded-xl text-slate-400 hover:text-white transition-all";
-            } else {
-                title.innerText = "Masuk ke CineFlash";
-                submitText.innerText = "Masuk Akun";
-                strengthBox.classList.add('hidden');
-                document.getElementById('tabSignInBtn').className = "flex-1 py-2 text-xs font-bold rounded-xl text-white bg-indigo-600 transition-all";
-                document.getElementById('tabSignUpBtn').className = "flex-1 py-2 text-xs font-semibold rounded-xl text-slate-400 hover:text-white transition-all";
-            }
-        }
-
-        function checkPasswordStrength(pass) {
-            const bar = document.getElementById('strengthBar');
-            const text = document.getElementById('strengthText');
-            if (pass.length < 6) {
-                bar.style.width = '25%';
-                bar.className = 'bg-rose-500 h-full transition-all';
-                text.innerText = 'Lemah';
-            } else if (pass.length < 10) {
-                bar.style.width = '65%';
-                bar.className = 'bg-amber-500 h-full transition-all';
-                text.innerText = 'Sedang';
-            } else {
-                bar.style.width = '100%';
-                bar.className = 'bg-emerald-500 h-full transition-all';
-                text.innerText = 'Kuat (Aman)';
-            }
-        }
-
-        function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('authEmail').value;
-            state.user.email = email;
-            state.user.name = email.split('@')[0];
-            localStorage.setItem('cine_user', JSON.stringify(state.user));
-            
-            closeAuthModal();
-            renderUserProfile();
-            showToast(`Berhasil masuk sebagai ${state.user.name}`);
-        }
-
-        function handleGoogleSignIn() {
-            state.user.email = "google.user@gmail.com";
-            state.user.name = "Google User";
-            closeAuthModal();
-            renderUserProfile();
-            showToast("Berhasil Masuk dengan Google!");
-        }
-
-        function handleSignOut() {
-            showToast("Anda telah keluar akun.");
-        }
-
-        function openSettingsModal() {
-            document.getElementById('tmdbApiKeyInput').value = state.tmdbApiKey;
-            document.getElementById('settingsModal').classList.remove('hidden');
-        }
-
-        function closeSettingsModal() {
-            document.getElementById('settingsModal').classList.add('hidden');
-        }
-
-        function saveApiKeySettings() {
-            const key = document.getElementById('tmdbApiKeyInput').value.trim();
-            state.tmdbApiKey = key;
-            localStorage.setItem('cine_tmdb_key', key);
-            closeSettingsModal();
-            showToast("TMDB API Key berhasil disimpan!");
-        }
-
-        /* ==========================================================================
-           11. UTILITY TOAST NOTIFICATION SYSTEM
-           ========================================================================== */
-        function showToast(message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = "liquid-glass rounded-2xl px-5 py-3 text-xs font-bold text-white shadow-2xl border border-white/20 animate-bounce flex items-center space-x-2";
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400"></i> <span>${message}</span>`;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
-
-        /* ==========================================================================
-           12. FIRESTORE SECURITY RULES (REFERENCE CODE FOR SETUP)
-           ==========================================================================
-           rules_version = '2';
-           service cloud.firestore {
-             match /databases/{database}/documents {
-               match /artifacts/{appId}/public/data/{document=**} {
-                 allow read: if true;
-                 allow write: if request.auth != null;
-               }
-               match /artifacts/{appId}/users/{userId}/{document=**} {
-                 allow read, write: if request.auth != null && request.auth.uid == userId;
-               }
-             }
-           }
-           ========================================================================== */
-    </script>
+      });
+    }
+
+    /* ==========================================
+       12. CUSTOM TOAST NOTIFICATIONS
+       ========================================== */
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      toast.className = 'liquid-glass rounded-2xl px-5 py-3 text-sm font-semibold text-main shadow-2xl flex items-center gap-3 border border-white/20 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-auto';
+      toast.innerHTML = `
+        <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+        <span>${message}</span>
+      `;
+
+      container.appendChild(toast);
+
+      // Trigger animation
+      setTimeout(() => {
+        toast.classList.remove('translate-y-10', 'opacity-0');
+      }, 50);
+
+      // Remove Toast
+      setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+  </script>
 </body>
 </html>
